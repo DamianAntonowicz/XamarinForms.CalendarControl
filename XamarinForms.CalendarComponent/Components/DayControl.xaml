@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinForms.CalendarComponent.Components.DayControl">
+
+    <Grid RowSpacing="0">
+
+        <Grid.GestureRecognizers>
+
+            <TapGestureRecognizer Tapped="DayControl_OnTapped" />
+
+        </Grid.GestureRecognizers>
+        
+        <Label x:Name="LabelDayNumber"
+               HorizontalOptions="Center"
+               VerticalOptions="EndAndExpand"
+               Padding="0,2,0,0"
+               FontSize="20" />
+
+    </Grid>
+
+</ContentView>
