@@ -155,43 +155,15 @@ namespace XamarinForms.CalendarComponent.Components
         {
             var gridColumns = new ColumnDefinitionCollection();
             var gridRows = new RowDefinitionCollection();
-            var width = 30;
             
             for (var i = 0; i < DayControl.DaysInWeek; i++)
             {
-                gridColumns.Add(new ColumnDefinition
-                {
-                    Width = width
-                });
+                gridColumns.Add(new ColumnDefinition());
             }
 
             for (var i = 0; i <= Date.GetWeekCountInMonth(); i++)
             {
-                if (i == 0)
-                {
-                    gridRows.Add(new RowDefinition()
-                    {
-                        Height = 20
-                    });
-                }
-                else
-                {
-                    if (i == Date.GetWeekCountInMonth())
-                    {
-                        gridRows.Add(new RowDefinition()
-                        {
-                            Height = width + 6
-                        });   
-                    }
-                    else
-                    {
-                        gridRows.Add(new RowDefinition()
-                        {
-                            Height = width
-                        });
-                    }
-                }
-                
+                gridRows.Add(new RowDefinition());
             }
 
             LayoutRoot.RowDefinitions = gridRows;
@@ -205,7 +177,7 @@ namespace XamarinForms.CalendarComponent.Components
                 return;
             }
 
-            for (int i = 1; i <= Date.GetDayCountInMonth(); i++)
+            for (var i = 1; i <= Date.GetDayCountInMonth(); i++)
             {
                 var date = new DateTime(Date.Year, Date.Month, i);
 
