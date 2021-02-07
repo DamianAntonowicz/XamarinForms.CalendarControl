@@ -12,6 +12,29 @@ namespace XamarinForms.CalendarComponent.Components
         public event EventHandler<DayControlTappedEventArgs> DayTapped;
         public event EventHandler<DayControlAddedEventArgs> DayAdded;
 
+        #region WeekDayHeaderDataTemplateProperty
+
+        public static readonly BindableProperty WeekDayHeaderDataTemplateProperty =
+            BindableProperty.Create(
+                propertyName: nameof(WeekDayHeaderDataTemplateProperty),
+                returnType: typeof(DataTemplate),
+                declaringType: typeof(CalendarControl),
+                propertyChanged: OnWeekDayHeaderDataTemplateChanged);
+
+        private static void OnWeekDayHeaderDataTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var calendarControl = bindable as CalendarControl;
+            calendarControl.InitializeView();
+        }
+        
+        public DataTemplate WeekDayHeaderDataTemplate
+        {
+            get => (DataTemplate) GetValue(WeekDayHeaderDataTemplateProperty);
+            set => SetValue(WeekDayHeaderDataTemplateProperty, value);
+        }
+        
+        #endregion
+        
         #region SelectedDaysProperty
         
         public static readonly BindableProperty SelectedDaysProperty =
@@ -192,20 +215,22 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeCalendarHeaders()
         {
+            if (WeekDayHeaderDataTemplate == null)
+            {
+                return;
+            }
+            
             for (var dayNumber = 1; dayNumber <= DayControl.DaysInWeek; dayNumber++)
             {
-                var dayHeader = new Label
-                {
-                    VerticalOptions = LayoutOptions.End,
-                    HorizontalOptions = LayoutOptions.Center,
-                    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                    Text = dayNumber.ToString()
-                };
+                var dateTime = new DateTime(Date.Year, Date.Month, dayNumber);
+
+                var weekDayHeaderView = WeekDayHeaderDataTemplate.CreateContent() as View;
+                weekDayHeaderView.BindingContext = dateTime;
                 
-                Grid.SetRow(dayHeader, 0);
-                Grid.SetColumn(dayHeader, dayNumber - 1);
+                Grid.SetRow(weekDayHeaderView, 0);
+                Grid.SetColumn(weekDayHeaderView, dayNumber - 1);
                 
-                LayoutRoot.Children.Add(dayHeader);
+                LayoutRoot.Children.Add(weekDayHeaderView);
             }
         }
 

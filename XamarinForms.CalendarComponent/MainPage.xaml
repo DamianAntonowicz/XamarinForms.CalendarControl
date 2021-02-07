@@ -5,11 +5,23 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
              x:Class="XamarinForms.CalendarComponent.MainPage">
+    
     <StackLayout x:Name="StackLayout">
         <components:DayControl Date="04/17/04" />
         <components:DayControl Date="04/18/04" />
-        <components:DayControl Date="04/19/04" />
+        <components:DayControl Date="04/20/04" />
+        
+        <components:CalendarControl Date="01/01/21">
+            
+            <components:CalendarControl.WeekDayHeaderDataTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding StringFormat='{0:dd}'}"
+                                       TextColor="Red"/>
+                            </DataTemplate>
+                        </components:CalendarControl.WeekDayHeaderDataTemplate>
+            
+        </components:CalendarControl>
+        
         <components:CalendarControl Date="01/01/21"/>
-        <components:CalendarControl Date="02/01/21"/>
     </StackLayout>
 </ContentPage>
