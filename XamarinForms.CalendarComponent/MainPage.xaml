@@ -13,6 +13,16 @@
                    TextColor="Blue" />
         </ControlTemplate>
         
+        <ControlTemplate x:Key="DayControlTemplate2">
+            <StackLayout>
+                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                       TextColor="Brown" />
+                <Label Text="{TemplateBinding BindingContext}"
+                       FontSize="Micro"
+                       TextColor="Black"/>
+            </StackLayout>
+        </ControlTemplate>
+        
     </ContentPage.Resources>
     
     <StackLayout x:Name="StackLayout">
@@ -21,7 +31,8 @@
                                ControlTemplate="{StaticResource DayControlTemplate}"/>
 
         <components:CalendarControl Date="01/01/21"
-                                    DayControlTemplate="{StaticResource DayControlTemplate}">
+                                    DayControlTemplate="{StaticResource DayControlTemplate}"
+                                    DayAdded="CalendarControl_OnDayAdded">
 
             <components:CalendarControl.WeekDayHeaderDataTemplate>
                 <DataTemplate>
