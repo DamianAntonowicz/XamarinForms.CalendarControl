@@ -25,5 +25,15 @@ namespace XamarinForms.CalendarComponent
                 e.DayControl.BindingContext = "weekend";
             }
         }
+
+        private void ButtonPreviousMonth_OnClicked(object sender, EventArgs e)
+        {
+            CalendarControl.Date = CalendarControl.Date.AddMonths(-1);
+        }
+        
+        private void ButtonNextMonth_OnClicked(object sender, EventArgs e)
+        {
+            CalendarControl.Date = CalendarControl.Date.AddMonths(1);
+        }
     }
 }

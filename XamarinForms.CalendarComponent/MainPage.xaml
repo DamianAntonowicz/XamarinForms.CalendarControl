@@ -30,7 +30,8 @@
         <components:DayControl Date="04/17/04"
                                ControlTemplate="{StaticResource DayControlTemplate}"/>
 
-        <components:CalendarControl Date="01/01/21"
+        <components:CalendarControl x:Name="CalendarControl" 
+                                    Date="01/01/21"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     DayAdded="CalendarControl_OnDayAdded">
 
@@ -43,6 +44,16 @@
 
         </components:CalendarControl>
         
+        <StackLayout VerticalOptions="EndAndExpand">
+            
+            <Label Text="{Binding Date, Source={x:Reference CalendarControl}}"/>
+            
+            <Button Text="previous month"
+                    Clicked="ButtonPreviousMonth_OnClicked"/>
+            
+            <Button Text="next month"
+                    Clicked="ButtonNextMonth_OnClicked"/>
+        </StackLayout>
     </StackLayout>
     
 </ContentPage>
