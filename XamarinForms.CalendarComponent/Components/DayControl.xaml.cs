@@ -17,14 +17,7 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 nameof(IsSelected),
                 typeof(bool),
-                typeof(bool),
-                propertyChanged: OnIsSelectedChanged);
-
-        private static void OnIsSelectedChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            // var dayControl = bindable as DayControl;
-            // dayControl.IsSelected = (bool) newValue;
-        }
+                typeof(bool));
 
         public bool IsSelected
         {
@@ -40,15 +33,7 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 nameof(Date),
                 typeof(DateTime),
-                typeof(DateTime),
-                propertyChanged: OnDateChanged);
-
-        private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var dayControl = bindable as DayControl;
-            // dayControl.Date = (DateTime) newValue;
-            dayControl.LabelDayNumber.Text = dayControl.Date.Day.ToString();
-        }
+                typeof(DateTime));
 
         public DateTime Date
         {
@@ -71,25 +56,6 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 return;
             }
-
-            if (propertyName.Equals(nameof(Date), StringComparison.InvariantCultureIgnoreCase))
-            {
-                UpdateInnerLabel();
-            }
-
-            if (propertyName.Equals(nameof(IsSelected), StringComparison.InvariantCultureIgnoreCase))
-            {
-                UpdateVisualState();
-            }
-        }
-
-        private void UpdateVisualState()
-        {
-        }
-
-        private void UpdateInnerLabel()
-        {
-          
         }
 
         private void DayControl_OnTapped(object sender, EventArgs e)
@@ -108,7 +74,6 @@ namespace XamarinForms.CalendarComponent.Components
             // }
 
             Tapped?.Invoke(this, null);
-            UpdateVisualState();
         }
     }
 

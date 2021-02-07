@@ -34,6 +34,29 @@ namespace XamarinForms.CalendarComponent.Components
         }
         
         #endregion
+
+        #region DayControlTemplateProperty
+
+        public static readonly BindableProperty DayControlTemplateProperty =
+            BindableProperty.Create(
+                propertyName: nameof(DayControlTemplate),
+                returnType: typeof(ControlTemplate),
+                declaringType: typeof(CalendarControl),
+                propertyChanged: OnDayControlTemplateChanged);
+
+        private static void OnDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var calendarControl = bindable as CalendarControl;
+            calendarControl.InitializeView();
+        }
+
+        public ControlTemplate DayControlTemplate
+        {
+            get => (ControlTemplate) GetValue(DayControlTemplateProperty);
+            set => SetValue(DayControlTemplateProperty, value);
+        }
+            
+        #endregion
         
         #region SelectedDaysProperty
         
@@ -177,6 +200,11 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeCalendarDays()
         {
+            if (DayControlTemplate == null)
+            {
+                return;
+            }
+
             for (int i = 1; i <= Date.GetDayCountInMonth(); i++)
             {
                 var date = new DateTime(Date.Year, Date.Month, i);
@@ -187,6 +215,8 @@ namespace XamarinForms.CalendarComponent.Components
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                     VerticalOptions =  LayoutOptions.CenterAndExpand,
                 };
+
+                dayControl.ControlTemplate = DayControlTemplate;
 
                 Grid.SetColumn(dayControl, date.GetDayNumberOfWeek() - 1);
                 Grid.SetRow(dayControl, date.GetWeekNumberOfMonth());
