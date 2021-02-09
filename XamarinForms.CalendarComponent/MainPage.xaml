@@ -8,6 +8,10 @@
 
     <ContentPage.Resources>
         
+        <ControlTemplate x:Key="WeekDayControlTemplate">
+            <Label Text="{TemplateBinding DayOfWeek}"/>
+        </ControlTemplate>
+        
         <ControlTemplate x:Key="DayControlTemplate">
             <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
                    TextColor="Blue" />
@@ -30,19 +34,11 @@
         <components:DayControl Date="04/17/04"
                                ControlTemplate="{StaticResource DayControlTemplate}"/>
 
-        <components:CalendarControl x:Name="CalendarControl" 
+        <components:CalendarControl x:Name="CalendarControl"
+                                    DayAdded="CalendarControl_OnDayAdded"
                                     Date="01/01/21"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
-                                    DayAdded="CalendarControl_OnDayAdded">
-
-            <components:CalendarControl.WeekDayHeaderDataTemplate>
-                <DataTemplate>
-                    <Label Text="{Binding StringFormat='{0:dd}'}"
-                           TextColor="Red" />
-                </DataTemplate>
-            </components:CalendarControl.WeekDayHeaderDataTemplate>
-
-        </components:CalendarControl>
+                                    WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
         
         <StackLayout VerticalOptions="EndAndExpand">
             

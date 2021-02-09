@@ -1,5 +1,4 @@
 using System;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace XamarinForms.CalendarComponent.Components

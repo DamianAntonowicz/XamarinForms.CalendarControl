@@ -12,25 +12,25 @@ namespace XamarinForms.CalendarComponent.Components
         public event EventHandler<DayControlTappedEventArgs> DayTapped;
         public event EventHandler<DayControlAddedEventArgs> DayAdded;
 
-        #region WeekDayHeaderDataTemplateProperty
+        #region WeekDayHeaderControlTemplateProperty
 
-        public static readonly BindableProperty WeekDayHeaderDataTemplateProperty =
+        public static readonly BindableProperty WeekDayControlTemplateProperty =
             BindableProperty.Create(
-                propertyName: nameof(WeekDayHeaderDataTemplateProperty),
-                returnType: typeof(DataTemplate),
+                propertyName: nameof(WeekDayControlTemplateProperty),
+                returnType: typeof(ControlTemplate),
                 declaringType: typeof(CalendarControl),
-                propertyChanged: OnWeekDayHeaderDataTemplateChanged);
+                propertyChanged: OnWeekDayControlTemplateChanged);
 
-        private static void OnWeekDayHeaderDataTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnWeekDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendarControl = bindable as CalendarControl;
             calendarControl.InitializeView();
         }
         
-        public DataTemplate WeekDayHeaderDataTemplate
+        public ControlTemplate WeekDayHeaderControlTemplate
         {
-            get => (DataTemplate) GetValue(WeekDayHeaderDataTemplateProperty);
-            set => SetValue(WeekDayHeaderDataTemplateProperty, value);
+            get => (ControlTemplate) GetValue(WeekDayControlTemplateProperty);
+            set => SetValue(WeekDayControlTemplateProperty, value);
         }
         
         #endregion
@@ -217,23 +217,30 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeCalendarHeaders()
         {
-            if (WeekDayHeaderDataTemplate == null)
+            if (WeekDayHeaderControlTemplate == null)
             {
                 return;
             }
-            
-            for (var dayNumber = 1; dayNumber <= DayControl.DaysInWeek; dayNumber++)
-            {
-                var dateTime = new DateTime(Date.Year, Date.Month, dayNumber);
 
-                var weekDayHeaderView = WeekDayHeaderDataTemplate.CreateContent() as View;
-                weekDayHeaderView.BindingContext = dateTime;
-                
-                Grid.SetRow(weekDayHeaderView, 0);
-                Grid.SetColumn(weekDayHeaderView, dayNumber - 1);
-                
-                LayoutRoot.Children.Add(weekDayHeaderView);
+            void AddWeekDayControl(DayOfWeek dayOfWeek, int weekDayNumber)
+            {
+                var weekDayControl = new WeekDayHeaderControl();
+                weekDayControl.ControlTemplate = WeekDayHeaderControlTemplate;
+                weekDayControl.DayOfWeek = dayOfWeek;
+
+                Grid.SetRow(weekDayControl, 0);
+                Grid.SetColumn(weekDayControl, weekDayNumber - 1);
+
+                LayoutRoot.Children.Add(weekDayControl);
             }
+
+            AddWeekDayControl(DayOfWeek.Monday, weekDayNumber: 1);
+            AddWeekDayControl(DayOfWeek.Tuesday, weekDayNumber: 2);
+            AddWeekDayControl(DayOfWeek.Wednesday, weekDayNumber: 3);
+            AddWeekDayControl(DayOfWeek.Thursday, weekDayNumber: 4);
+            AddWeekDayControl(DayOfWeek.Friday, weekDayNumber: 5);
+            AddWeekDayControl(DayOfWeek.Saturday, weekDayNumber: 6);
+            AddWeekDayControl(DayOfWeek.Sunday, weekDayNumber: 7);
         }
 
         private void DayComponent_OnTapped(object sender, EventArgs e)
