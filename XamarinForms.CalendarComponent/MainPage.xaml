@@ -37,12 +37,13 @@
         <components:CalendarControl x:Name="CalendarControl"
                                     DayAdded="CalendarControl_OnDayAdded"
                                     Date="01/01/21"
+                                    DayTapped="CalendarControl_OnDayTapped"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
         
         <StackLayout VerticalOptions="EndAndExpand">
             
-            <Label Text="{Binding Date, Source={x:Reference CalendarControl}}"/>
+            <Label Text="{Binding Date, Source={x:Reference CalendarControl}, StringFormat='Current month: {0}'}"/>
             
             <Button Text="previous month"
                     Clicked="ButtonPreviousMonth_OnClicked"/>

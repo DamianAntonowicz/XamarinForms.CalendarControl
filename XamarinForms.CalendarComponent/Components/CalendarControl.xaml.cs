@@ -177,6 +177,14 @@ namespace XamarinForms.CalendarComponent.Components
                 return;
             }
 
+            if (Days.Count > 0)
+            {
+                foreach (var dayControl in Days)
+                {
+                    dayControl.Tapped -= DayComponent_OnTapped;
+                }
+            }
+
             for (var i = 1; i <= Date.GetDayCountInMonth(); i++)
             {
                 var date = new DateTime(Date.Year, Date.Month, i);
@@ -194,14 +202,6 @@ namespace XamarinForms.CalendarComponent.Components
                 Grid.SetRow(dayControl, date.GetWeekNumberOfMonth());
                 
                 dayControl.Tapped += DayComponent_OnTapped;
-
-                if (SelectionMode == CalendarControlSelectionMode.SingleSelect)
-                {
-                    dayControl.BeingTapped += (s, e) =>
-                    {
-                        e.Handled = dayControl.Date == SelectedDays?.FirstOrDefault();
-                    };
-                }
                 
                 Days.Add(dayControl);
                 LayoutRoot.Children.Add(dayControl);

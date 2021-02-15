@@ -7,7 +7,6 @@ namespace XamarinForms.CalendarComponent.Components
     {
         public const int DaysInWeek = 7;
 
-        public event EventHandler<DayControlBeingTappedEventArgs> BeingTapped;
         public event EventHandler Tapped;
 
         #region IsSelectedProperty
@@ -47,37 +46,9 @@ namespace XamarinForms.CalendarComponent.Components
             InitializeComponent();
         }
 
-        protected override void OnPropertyChanged(string propertyName = null)
-        {
-            base.OnPropertyChanged(propertyName);
-
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return;
-            }
-        }
-
         private void DayControl_OnTapped(object sender, EventArgs e)
         {
-            var beingTappedEventArgs = new DayControlBeingTappedEventArgs();
-            BeingTapped?.Invoke(this, beingTappedEventArgs);
-
-            if (beingTappedEventArgs.Handled)
-            {
-                return;
-            }
-
-            // if (IsSelectable)
-            // {
-            //     IsSelected = !IsSelected;
-            // }
-
             Tapped?.Invoke(this, null);
         }
-    }
-
-    public class DayControlBeingTappedEventArgs : EventArgs
-    {
-        public bool Handled { get; set; }
     }
 }
