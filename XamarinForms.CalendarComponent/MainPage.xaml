@@ -13,8 +13,21 @@
         </ControlTemplate>
         
         <ControlTemplate x:Key="DayControlTemplate">
-            <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
-                   TextColor="Blue" />
+            <Grid Padding="10">
+                
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" 
+                                 Binding="{TemplateBinding IsSelected}"
+                                 Value="True">
+                        <Setter Property="BackgroundColor"
+                                Value="LightGreen"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+                
+                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                       TextColor="Blue" />
+            
+            </Grid>
         </ControlTemplate>
         
         <ControlTemplate x:Key="DayControlTemplate2">
@@ -36,8 +49,9 @@
 
         <components:CalendarControl x:Name="CalendarControl"
                                     DayAdded="CalendarControl_OnDayAdded"
-                                    Date="01/01/21"
                                     DayTapped="CalendarControl_OnDayTapped"
+                                    Date="01/01/21"
+                                    SelectionMode="SingleSelect"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
         

@@ -13,9 +13,9 @@ namespace XamarinForms.CalendarComponent.Components
 
         public static readonly BindableProperty IsSelectedProperty =
             BindableProperty.Create(
-                nameof(IsSelected),
-                typeof(bool),
-                typeof(bool));
+                propertyName: nameof(IsSelected),
+                returnType: typeof(bool),
+                declaringType:typeof(DayControl));
 
         public bool IsSelected
         {
@@ -29,9 +29,9 @@ namespace XamarinForms.CalendarComponent.Components
 
         public static readonly BindableProperty DateProperty =
             BindableProperty.Create(
-                nameof(Date),
-                typeof(DateTime),
-                typeof(DateTime));
+                propertyName: nameof(Date),
+                returnType: typeof(DateTime),
+                declaringType:typeof(DayControl));
 
         public DateTime Date
         {

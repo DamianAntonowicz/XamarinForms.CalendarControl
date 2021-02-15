@@ -69,19 +69,20 @@ namespace XamarinForms.CalendarComponent.Components
 
         private static void OnSelectedDaysChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var daysSelected = newValue as IList<DateTime>;
+            var daysToSelect = newValue as IList<DateTime>;
             var calendarControl = bindable as CalendarControl;
             
             if (calendarControl.SelectionMode == CalendarControlSelectionMode.SingleSelect)
             {
-                if (daysSelected != null && 
-                    daysSelected.Count > 1)
+                if (daysToSelect != null && 
+                    daysToSelect.Count > 1)
                 {
-                    // throw exception?
+                    throw new InvalidOperationException(
+                        "Trying to select more than one day when working in SingleSelect mode");
                 }
             }
 
-            calendarControl.SelectDayControls(daysSelected);
+            calendarControl.SelectDayControls(daysToSelect);
         }
 
         public IReadOnlyCollection<DateTime> SelectedDays
@@ -101,7 +102,7 @@ namespace XamarinForms.CalendarComponent.Components
                 declaringType: typeof(CalendarControl),
                 propertyChanged: OnDateChanged);
 
-        private static void OnDateChanged(BindableObject bindable, object oldvalue, object newvalue)
+        private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendarControl = bindable as CalendarControl;
             calendarControl.InitializeView();
@@ -145,10 +146,19 @@ namespace XamarinForms.CalendarComponent.Components
             InitializeCalendarHeaders();
             InitializeCalendarDays();
         }
-
-        private void SelectDayControls(IEnumerable<DateTime> daysSelected)
+        
+        private void SelectDayControls(IEnumerable<DateTime> daysToSelect)
         {
             Days.ForEach(dayControl => dayControl.IsSelected = false);
+
+            foreach (var dayToSelect in daysToSelect)
+            {
+                var dayControl = Days.FirstOrDefault(x => x.Date == dayToSelect.Date);
+                if (dayControl != null)
+                {
+                    dayControl.IsSelected = true;
+                }
+            }
         }
 
         private void InitializeGridDefinitions()
@@ -183,6 +193,8 @@ namespace XamarinForms.CalendarComponent.Components
                 {
                     dayControl.Tapped -= DayComponent_OnTapped;
                 }
+                
+                Days.Clear();
             }
 
             for (var i = 1; i <= Date.GetDayCountInMonth(); i++)
@@ -214,6 +226,22 @@ namespace XamarinForms.CalendarComponent.Components
                 SelectDayControls(SelectedDays);
             }
         }
+        
+        private void DayComponent_OnTapped(object sender, EventArgs e)
+        {
+            var dayControl = sender as DayControl;
+
+            if (SelectionMode == CalendarControlSelectionMode.SingleSelect)
+            {
+                SelectedDays = new[] {dayControl.Date};
+            }
+            else if (SelectionMode == CalendarControlSelectionMode.MultiSelect)
+            {
+                // TODO: handle multi select
+            }
+
+            DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));
+        }
 
         private void InitializeCalendarHeaders()
         {
@@ -242,14 +270,8 @@ namespace XamarinForms.CalendarComponent.Components
             AddWeekDayControl(DayOfWeek.Saturday, weekDayNumber: 6);
             AddWeekDayControl(DayOfWeek.Sunday, weekDayNumber: 7);
         }
-
-        private void DayComponent_OnTapped(object sender, EventArgs e)
-        {
-            var dayControl = sender as DayControl;
-
-            DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));
-        }
     }
+    
     public class DayControlAddedEventArgs : EventArgs
     {
         public DayControl DayControl { get; }

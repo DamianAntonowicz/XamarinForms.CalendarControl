@@ -38,7 +38,7 @@ namespace XamarinForms.CalendarComponent
 
         private async void CalendarControl_OnDayTapped(object sender, DayControlTappedEventArgs e)
         {
-            await DisplayAlert(title: "", message: "You clicked on: " + e.DayControl.Date, cancel: "ok");
+            //await DisplayAlert(title: "", message: "You clicked on: " + e.DayControl.Date, cancel: "ok");
         }
     }
 }
