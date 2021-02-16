@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -237,7 +238,18 @@ namespace XamarinForms.CalendarComponent.Components
             }
             else if (SelectionMode == CalendarControlSelectionMode.MultiSelect)
             {
-                // TODO: handle multi select
+                var newSelectedDays = SelectedDays.ToList();
+
+                if (dayControl.IsSelected)
+                {
+                    newSelectedDays.Remove(dayControl.Date);
+                }
+                else
+                {
+                    newSelectedDays.Add(dayControl.Date);    
+                }
+                
+                SelectedDays = new ReadOnlyCollection<DateTime>(newSelectedDays);
             }
 
             DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));

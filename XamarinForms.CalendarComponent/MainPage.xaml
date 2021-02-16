@@ -42,7 +42,7 @@
         
     </ContentPage.Resources>
     
-    <StackLayout x:Name="StackLayout">
+    <StackLayout>
 
         <components:DayControl Date="04/17/04"
                                ControlTemplate="{StaticResource DayControlTemplate}"/>
@@ -51,9 +51,12 @@
                                     DayAdded="CalendarControl_OnDayAdded"
                                     DayTapped="CalendarControl_OnDayTapped"
                                     Date="01/01/21"
-                                    SelectionMode="SingleSelect"
+                                    SelectionMode="MultiSelect"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
+        
+        <StackLayout BindableLayout.ItemsSource="{Binding SelectedDays, Source={x:Reference CalendarControl}}"
+                     HorizontalOptions="Start"/>
         
         <StackLayout VerticalOptions="EndAndExpand">
             
