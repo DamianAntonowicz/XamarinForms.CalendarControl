@@ -16,12 +16,21 @@
             <Grid Padding="10">
                 
                 <Grid.Triggers>
+                    
                     <DataTrigger TargetType="Grid" 
                                  Binding="{TemplateBinding IsSelected}"
                                  Value="True">
                         <Setter Property="BackgroundColor"
                                 Value="LightGreen"/>
                     </DataTrigger>
+                    
+                    <DataTrigger TargetType="Grid" 
+                                 Binding="{TemplateBinding IsSelectable}"
+                                 Value="False">
+                        <Setter Property="BackgroundColor"
+                                Value="LightSlateGray"/>
+                    </DataTrigger>
+                    
                 </Grid.Triggers>
                 
                 <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
