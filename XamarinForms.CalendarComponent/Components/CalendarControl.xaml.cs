@@ -25,7 +25,7 @@ namespace XamarinForms.CalendarComponent.Components
         private static void OnWeekDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeView();
+            calendarControl.InitializeWeekDayHeaders();
         }
         
         public ControlTemplate WeekDayHeaderControlTemplate
@@ -141,10 +141,8 @@ namespace XamarinForms.CalendarComponent.Components
         private void InitializeView()
         {
             SelectedDays = new List<DateTime>().AsReadOnly();
-            LayoutRoot.Children.Clear();
 
             InitializeGridDefinitions();
-            InitializeCalendarHeaders();
             InitializeCalendarDays();
         }
         
@@ -164,21 +162,16 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeGridDefinitions()
         {
-            var gridColumns = new ColumnDefinitionCollection();
-            var gridRows = new RowDefinitionCollection();
+            GridDays.Children.Clear();
             
-            for (var i = 0; i < DayControl.DaysInWeek; i++)
-            {
-                gridColumns.Add(new ColumnDefinition());
-            }
+            var gridRows = new RowDefinitionCollection();
 
-            for (var i = 0; i <= Date.GetWeekCountInMonth(); i++)
+            for (var i = 1; i <= Date.WeeksInMonth(); i++)
             {
                 gridRows.Add(new RowDefinition());
             }
 
-            LayoutRoot.RowDefinitions = gridRows;
-            LayoutRoot.ColumnDefinitions = gridColumns;
+            GridDays.RowDefinitions = gridRows;
         }
 
         private void InitializeCalendarDays()
@@ -198,7 +191,7 @@ namespace XamarinForms.CalendarComponent.Components
                 Days.Clear();
             }
 
-            for (var i = 1; i <= Date.GetDayCountInMonth(); i++)
+            for (var i = 1; i <= Date.DaysInMonth(); i++)
             {
                 var date = new DateTime(Date.Year, Date.Month, i);
 
@@ -211,13 +204,13 @@ namespace XamarinForms.CalendarComponent.Components
 
                 dayControl.ControlTemplate = DayControlTemplate;
 
-                Grid.SetColumn(dayControl, date.GetDayNumberOfWeek() - 1);
-                Grid.SetRow(dayControl, date.GetWeekNumberOfMonth());
+                Grid.SetColumn(dayControl, date.DayOfWeek() - 1);
+                Grid.SetRow(dayControl, date.WeekOfMonth() - 1);
                 
                 dayControl.Tapped += DayComponent_OnTapped;
                 
                 Days.Add(dayControl);
-                LayoutRoot.Children.Add(dayControl);
+                GridDays.Children.Add(dayControl);
 
                 DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
             }
@@ -258,32 +251,31 @@ namespace XamarinForms.CalendarComponent.Components
             DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));
         }
 
-        private void InitializeCalendarHeaders()
+        private void InitializeWeekDayHeaders()
         {
             if (WeekDayHeaderControlTemplate == null)
             {
                 return;
             }
 
-            void AddWeekDayControl(DayOfWeek dayOfWeek, int weekDayNumber)
+            void AddWeekDayHeaderControl(DayOfWeek dayOfWeek, int weekDayNumber)
             {
                 var weekDayControl = new WeekDayHeaderControl();
                 weekDayControl.ControlTemplate = WeekDayHeaderControlTemplate;
                 weekDayControl.DayOfWeek = dayOfWeek;
 
-                Grid.SetRow(weekDayControl, 0);
                 Grid.SetColumn(weekDayControl, weekDayNumber - 1);
 
-                LayoutRoot.Children.Add(weekDayControl);
+                GridWeekDayHeaders.Children.Add(weekDayControl);
             }
 
-            AddWeekDayControl(DayOfWeek.Monday, weekDayNumber: 1);
-            AddWeekDayControl(DayOfWeek.Tuesday, weekDayNumber: 2);
-            AddWeekDayControl(DayOfWeek.Wednesday, weekDayNumber: 3);
-            AddWeekDayControl(DayOfWeek.Thursday, weekDayNumber: 4);
-            AddWeekDayControl(DayOfWeek.Friday, weekDayNumber: 5);
-            AddWeekDayControl(DayOfWeek.Saturday, weekDayNumber: 6);
-            AddWeekDayControl(DayOfWeek.Sunday, weekDayNumber: 7);
+            AddWeekDayHeaderControl(DayOfWeek.Monday, weekDayNumber: 1);
+            AddWeekDayHeaderControl(DayOfWeek.Tuesday, weekDayNumber: 2);
+            AddWeekDayHeaderControl(DayOfWeek.Wednesday, weekDayNumber: 3);
+            AddWeekDayHeaderControl(DayOfWeek.Thursday, weekDayNumber: 4);
+            AddWeekDayHeaderControl(DayOfWeek.Friday, weekDayNumber: 5);
+            AddWeekDayHeaderControl(DayOfWeek.Saturday, weekDayNumber: 6);
+            AddWeekDayHeaderControl(DayOfWeek.Sunday, weekDayNumber: 7);
         }
     }
     

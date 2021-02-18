@@ -4,50 +4,56 @@ namespace System
 {
     public static class DateTimeExtensions
     {
-
-        public static int GetDayCountInMonth(this DateTime dateTime)
+        public static int DaysInMonth(this DateTime dateTime)
         {
             return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
         }
 
-        public static DateTime GetFirstDayOfMonth(this DateTime dateTime)
+        public static DateTime FirstDayOfMonth(this DateTime dateTime)
         {
             return new DateTime(dateTime.Year, dateTime.Month, 1);
         }
 
-        public static int GetWeekCountInMonth(this DateTime dateTime)
+        public static int WeeksInMonth(this DateTime dateTime)
         {
-            return GetWeekNumberOfMonth(new DateTime(dateTime.Year, dateTime.Month, GetDayCountInMonth(dateTime)));
+            var daysInMonth = DaysInMonth(dateTime);
+            var lastWeekOfMonth= WeekOfMonth(new DateTime(dateTime.Year, dateTime.Month, daysInMonth));
+
+            return lastWeekOfMonth;
         }
 
-        public static int GetWeekNumberOfMonth(this DateTime date)
+        public static int WeekOfMonth(this DateTime date)
         {
-            return date.GetWeekNumberOfYear() - date.GetFirstDayOfMonth().GetWeekNumberOfYear() + 1;
+            var weekOfYear = date.WeekOfYear();
+            var weekOfYearForFirstDayOfMonth = date.FirstDayOfMonth().WeekOfYear();
+            var weekOfMonth = weekOfYear - weekOfYearForFirstDayOfMonth + 1;
+
+            return weekOfMonth;
         }
 
-        public static int GetDayNumberOfWeek(this DateTime dateTime)
+        public static int DayOfWeek(this DateTime dateTime)
         {
             switch (dateTime.DayOfWeek)
             {
-                case DayOfWeek.Monday: return 1;
-                case DayOfWeek.Tuesday: return 2;
-                case DayOfWeek.Wednesday: return 3;
-                case DayOfWeek.Thursday: return 4;
-                case DayOfWeek.Friday: return 5;
-                case DayOfWeek.Saturday: return 6;
-                case DayOfWeek.Sunday: return 7;
+                case System.DayOfWeek.Monday: return 1;
+                case System.DayOfWeek.Tuesday: return 2;
+                case System.DayOfWeek.Wednesday: return 3;
+                case System.DayOfWeek.Thursday: return 4;
+                case System.DayOfWeek.Friday: return 5;
+                case System.DayOfWeek.Saturday: return 6;
+                case System.DayOfWeek.Sunday: return 7;
             }
 
             return default;
         }
         
-        private static int GetWeekNumberOfYear(this DateTime dateTime)
+        private static int WeekOfYear(this DateTime dateTime)
         {
-            var culture = CultureInfo.CurrentCulture;
+            var weekOfYear = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime,
+                rule: CalendarWeekRule.FirstDay,
+                firstDayOfWeek: System.DayOfWeek.Monday);
 
-            return culture.Calendar.GetWeekOfYear(dateTime,
-                CalendarWeekRule.FirstDay,
-                DayOfWeek.Monday);
+            return weekOfYear;
         }
     }
 }
