@@ -66,6 +66,7 @@ namespace XamarinForms.CalendarComponent.Components
                 propertyName: nameof(SelectedDays),
                 returnType: typeof(IReadOnlyCollection<DateTime>),
                 declaringType: typeof(CalendarControl),
+                defaultValue: new List<DateTime>().AsReadOnly(),
                 propertyChanged: OnSelectedDaysChanged);
 
         private static void OnSelectedDaysChanged(BindableObject bindable, object oldValue, object newValue)
@@ -144,11 +145,11 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 return;
             }
-            
-            SelectedDays = new List<DateTime>().AsReadOnly();
 
             InitializeGridForCalendarDays();
             InitializeCalendarDays();
+            
+            SelectDayControls(SelectedDays);
         }
         
         private void SelectDayControls(IEnumerable<DateTime> daysToSelect)
