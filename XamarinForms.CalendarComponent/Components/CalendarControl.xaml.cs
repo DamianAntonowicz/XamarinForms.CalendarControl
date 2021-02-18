@@ -140,9 +140,14 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeView()
         {
+            if (DayControlTemplate == null)
+            {
+                return;
+            }
+            
             SelectedDays = new List<DateTime>().AsReadOnly();
 
-            InitializeGridDefinitions();
+            InitializeGridForCalendarDays();
             InitializeCalendarDays();
         }
         
@@ -160,7 +165,7 @@ namespace XamarinForms.CalendarComponent.Components
             }
         }
 
-        private void InitializeGridDefinitions()
+        private void InitializeGridForCalendarDays()
         {
             GridDays.Children.Clear();
             
@@ -176,11 +181,6 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeCalendarDays()
         {
-            if (DayControlTemplate == null)
-            {
-                return;
-            }
-
             if (Days.Count > 0)
             {
                 foreach (var dayControl in Days)
