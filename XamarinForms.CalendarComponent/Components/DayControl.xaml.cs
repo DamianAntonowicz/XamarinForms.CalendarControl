@@ -5,8 +5,6 @@ namespace XamarinForms.CalendarComponent.Components
 {
     public partial class DayControl : ContentView
     {
-        public const int DaysInWeek = 7;
-
         public event EventHandler Tapped;
 
         #region IsSelectableProperty
