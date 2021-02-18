@@ -232,24 +232,27 @@ namespace XamarinForms.CalendarComponent.Components
         {
             var dayControl = sender as DayControl;
 
-            if (SelectionMode == CalendarControlSelectionMode.SingleSelect)
+            if (dayControl.IsSelectable)
             {
-                SelectedDays = new[] {dayControl.Date};
-            }
-            else if (SelectionMode == CalendarControlSelectionMode.MultiSelect)
-            {
-                var newSelectedDays = SelectedDays.ToList();
+                if (SelectionMode == CalendarControlSelectionMode.SingleSelect)
+                {
+                    SelectedDays = new[] {dayControl.Date};
+                }
+                else if (SelectionMode == CalendarControlSelectionMode.MultiSelect)
+                {
+                    var newSelectedDays = SelectedDays.ToList();
 
-                if (dayControl.IsSelected)
-                {
-                    newSelectedDays.Remove(dayControl.Date);
+                    if (dayControl.IsSelected)
+                    {
+                        newSelectedDays.Remove(dayControl.Date);
+                    }
+                    else
+                    {
+                        newSelectedDays.Add(dayControl.Date);
+                    }
+
+                    SelectedDays = new ReadOnlyCollection<DateTime>(newSelectedDays);
                 }
-                else
-                {
-                    newSelectedDays.Add(dayControl.Date);    
-                }
-                
-                SelectedDays = new ReadOnlyCollection<DateTime>(newSelectedDays);
             }
 
             DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamarinForms.CalendarComponent.Components;
 
@@ -23,6 +18,12 @@ namespace XamarinForms.CalendarComponent
             {
                 e.DayControl.ControlTemplate = Resources["DayControlTemplate2"] as ControlTemplate;
                 e.DayControl.BindingContext = "weekend";
+            }
+
+            if (e.DayControl.Date.Day == 1 ||
+                e.DayControl.Date.Day == 10)
+            {
+                e.DayControl.IsSelectable = false;
             }
         }
 
