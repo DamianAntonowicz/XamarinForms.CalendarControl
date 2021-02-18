@@ -124,7 +124,14 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(SelectionMode),
                 returnType: typeof(CalendarControlSelectionMode),
+                propertyChanged: OnModeChanged,
                 declaringType: typeof(CalendarControl));
+        
+        private static void OnModeChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var calendarControl = bindable as CalendarControl;
+            calendarControl.SelectedDays = new List<DateTime>().AsReadOnly();
+        }
 
         public CalendarControlSelectionMode SelectionMode
         {

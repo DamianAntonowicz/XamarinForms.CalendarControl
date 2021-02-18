@@ -36,6 +36,16 @@ namespace XamarinForms.CalendarComponent
         {
             CalendarControl.Date = CalendarControl.Date.AddMonths(1);
         }
+        
+        private void ButtonSingleSelect_OnClicked(object sender, EventArgs e)
+        {
+            CalendarControl.SelectionMode = CalendarControlSelectionMode.SingleSelect;
+        }
+        
+        private void ButtonMultiselect_OnClicked(object sender, EventArgs e)
+        {
+            CalendarControl.SelectionMode = CalendarControlSelectionMode.MultiSelect;
+        }
 
         private async void CalendarControl_OnDayTapped(object sender, DayControlTappedEventArgs e)
         {
