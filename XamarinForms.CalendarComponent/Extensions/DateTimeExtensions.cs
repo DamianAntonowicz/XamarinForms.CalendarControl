@@ -6,12 +6,16 @@ namespace System
     {
         public static int DaysInMonth(this DateTime dateTime)
         {
-            return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+            var daysInMonth = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+
+            return daysInMonth;
         }
 
         public static DateTime FirstDayOfMonth(this DateTime dateTime)
         {
-            return new DateTime(dateTime.Year, dateTime.Month, 1);
+            var firstDayOfMonth = new DateTime(dateTime.Year, dateTime.Month, 1);
+
+            return firstDayOfMonth;
         }
 
         public static int WeeksInMonth(this DateTime dateTime)
