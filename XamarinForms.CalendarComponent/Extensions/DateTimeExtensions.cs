@@ -18,44 +18,48 @@ namespace System
             return firstDayOfMonth;
         }
 
-        public static int WeeksInMonth(this DateTime dateTime)
+        public static int WeeksInMonth(this DateTime dateTime, DayOfWeek firstDayOfWeek)
         {
             var daysInMonth = DaysInMonth(dateTime);
-            var lastWeekOfMonth= WeekOfMonth(new DateTime(dateTime.Year, dateTime.Month, daysInMonth));
+            var date = new DateTime(dateTime.Year, dateTime.Month, daysInMonth);
+            var lastWeekOfMonth= WeekOfMonth(date, firstDayOfWeek);
 
             return lastWeekOfMonth;
         }
 
-        public static int WeekOfMonth(this DateTime date)
+        public static int WeekOfMonth(this DateTime date, DayOfWeek firstDayOfWeek)
         {
-            var weekOfYear = date.WeekOfYear();
-            var weekOfYearForFirstDayOfMonth = date.FirstDayOfMonth().WeekOfYear();
+            var weekOfYear = date.WeekOfYear(firstDayOfWeek);
+            var weekOfYearForFirstDayOfMonth = date.FirstDayOfMonth().WeekOfYear(firstDayOfWeek);
             var weekOfMonth = weekOfYear - weekOfYearForFirstDayOfMonth + 1;
 
             return weekOfMonth;
         }
 
-        public static int DayOfWeek(this DateTime dateTime)
+        public static int DayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
         {
-            switch (dateTime.DayOfWeek)
+            var currentDayOfWeek = firstDayOfWeek;
+            var dayOfWeek = 1;
+            
+            for (var i = 1; i <= 7; i++)
             {
-                case System.DayOfWeek.Monday: return 1;
-                case System.DayOfWeek.Tuesday: return 2;
-                case System.DayOfWeek.Wednesday: return 3;
-                case System.DayOfWeek.Thursday: return 4;
-                case System.DayOfWeek.Friday: return 5;
-                case System.DayOfWeek.Saturday: return 6;
-                case System.DayOfWeek.Sunday: return 7;
+                if (currentDayOfWeek == dateTime.DayOfWeek)
+                {
+                    break;
+                }
+                
+                currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+                dayOfWeek++;
             }
 
-            return default;
+            return dayOfWeek;
         }
         
-        private static int WeekOfYear(this DateTime dateTime)
+        private static int WeekOfYear(this DateTime dateTime, DayOfWeek firstDayOfWeek)
         {
             var weekOfYear = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime,
                 rule: CalendarWeekRule.FirstDay,
-                firstDayOfWeek: System.DayOfWeek.Monday);
+                firstDayOfWeek: firstDayOfWeek);
 
             return weekOfYear;
         }

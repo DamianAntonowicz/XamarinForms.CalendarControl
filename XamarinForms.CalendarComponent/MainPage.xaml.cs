@@ -9,6 +9,9 @@ namespace XamarinForms.CalendarComponent
         public MainPage()
         {
             InitializeComponent();
+
+            PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
+            PickerFirstDayOfWeek.SelectedItem = DayOfWeek.Monday;
         }
 
         private void CalendarControl_OnDayAdded(object sender, DayControlAddedEventArgs e)

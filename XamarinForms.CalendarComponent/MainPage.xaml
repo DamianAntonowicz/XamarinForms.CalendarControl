@@ -59,6 +59,7 @@
         <components:CalendarControl x:Name="CalendarControl"
                                     DayAdded="CalendarControl_OnDayAdded"
                                     DayTapped="CalendarControl_OnDayTapped"
+                                    FirstDayOfWeek="{Binding SelectedItem, Source={x:Reference PickerFirstDayOfWeek}}"
                                     Date="02/01/21"
                                     SelectionMode="MultiSelect"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
@@ -71,6 +72,9 @@
             
             <Label Text="{Binding Date, Source={x:Reference CalendarControl}, StringFormat='Current month: {0}'}"/>
             <Label Text="{Binding Mode, Source={x:Reference CalendarControl}, StringFormat='Mode: {0}'}"/>
+            
+            <Label Text="First day of week"/>
+            <Picker x:Name="PickerFirstDayOfWeek"/>
             
             <Button Text="previous month"
                     Clicked="ButtonPreviousMonth_OnClicked"/>
