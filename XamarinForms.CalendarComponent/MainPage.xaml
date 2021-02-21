@@ -9,7 +9,8 @@
     <ContentPage.Resources>
         
         <ControlTemplate x:Key="WeekDayControlTemplate">
-            <Label Text="{TemplateBinding DayOfWeek}"/>
+            <Label Text="{TemplateBinding DayOfWeek}"
+                   FontSize="Small"/>
         </ControlTemplate>
         
         <ControlTemplate x:Key="DayControlTemplate">
@@ -59,8 +60,9 @@
         <components:CalendarControl x:Name="CalendarControl"
                                     DayAdded="CalendarControl_OnDayAdded"
                                     DayTapped="CalendarControl_OnDayTapped"
+                                    ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
                                     FirstDayOfWeek="{Binding SelectedItem, Source={x:Reference PickerFirstDayOfWeek}}"
-                                    Date="02/01/21"
+                                    Date="01/01/21"
                                     SelectionMode="{Binding SelectedItem, Source={x:Reference PickerSelectionMode}}"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
@@ -78,6 +80,10 @@
             
             <Label Text="Selection mode"/>
             <Picker x:Name="PickerSelectionMode"/>
+            
+            <Label Text="Show weekends"/>
+            <CheckBox x:Name="CheckBoxShowWeekends" 
+                      IsChecked="True"/>
             
             <Button Text="previous month"
                     Clicked="ButtonPreviousMonth_OnClicked"/>

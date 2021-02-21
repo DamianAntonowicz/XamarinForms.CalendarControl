@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -9,9 +10,34 @@ namespace XamarinForms.CalendarComponent.Components
     public partial class CalendarControl : ContentView
     {
         public List<DayControl> Days { get; } = new List<DayControl>();
-        
+
         public event EventHandler<DayControlTappedEventArgs> DayTapped;
         public event EventHandler<DayControlAddedEventArgs> DayAdded;
+
+        #region ShowWeekendsProperty
+
+        public static readonly BindableProperty ShowWeekendsProperty =
+            BindableProperty.Create(
+                propertyName: nameof(ShowWeekends),
+                returnType: typeof(bool),
+                declaringType: typeof(CalendarControl),
+                defaultValue: true,
+                propertyChanged: OnShowWeekendsChanged);
+
+        private static void OnShowWeekendsChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var calendarControl = bindable as CalendarControl;
+            calendarControl.InitializeWeekDayHeaders();
+            calendarControl.InitializeCalendarDays();
+        }
+
+        public bool ShowWeekends
+        {
+            get => (bool) GetValue(ShowWeekendsProperty);
+            set => SetValue(ShowWeekendsProperty, value);
+        }
+
+        #endregion
 
         #region FirstDayOfWeekProperty
 
@@ -29,13 +55,13 @@ namespace XamarinForms.CalendarComponent.Components
             calendarControl.InitializeWeekDayHeaders();
             calendarControl.InitializeCalendarDays();
         }
-        
+
         public DayOfWeek FirstDayOfWeek
         {
             get => (DayOfWeek) GetValue(FirstDayOfWeekProperty);
             set => SetValue(FirstDayOfWeekProperty, value);
         }
-        
+
         #endregion
 
         #region WeekDayHeaderControlTemplateProperty
@@ -52,13 +78,13 @@ namespace XamarinForms.CalendarComponent.Components
             var calendarControl = bindable as CalendarControl;
             calendarControl.InitializeWeekDayHeaders();
         }
-        
+
         public ControlTemplate WeekDayHeaderControlTemplate
         {
             get => (ControlTemplate) GetValue(WeekDayControlTemplateProperty);
             set => SetValue(WeekDayControlTemplateProperty, value);
         }
-        
+
         #endregion
 
         #region DayControlTemplateProperty
@@ -81,11 +107,11 @@ namespace XamarinForms.CalendarComponent.Components
             get => (ControlTemplate) GetValue(DayControlTemplateProperty);
             set => SetValue(DayControlTemplateProperty, value);
         }
-            
+
         #endregion
-        
+
         #region SelectedDaysProperty
-        
+
         public static readonly BindableProperty SelectedDaysProperty =
             BindableProperty.Create(
                 propertyName: nameof(SelectedDays),
@@ -98,10 +124,10 @@ namespace XamarinForms.CalendarComponent.Components
         {
             var daysToSelect = newValue as IList<DateTime>;
             var calendarControl = bindable as CalendarControl;
-            
+
             if (calendarControl.SelectionMode == CalendarControlSelectionMode.SingleSelect)
             {
-                if (daysToSelect != null && 
+                if (daysToSelect != null &&
                     daysToSelect.Count > 1)
                 {
                     throw new InvalidOperationException(
@@ -119,7 +145,7 @@ namespace XamarinForms.CalendarComponent.Components
         }
 
         #endregion
-        
+
         #region DateProperty
 
         public static readonly BindableProperty DateProperty =
@@ -142,7 +168,7 @@ namespace XamarinForms.CalendarComponent.Components
         }
 
         #endregion
-        
+
         #region SelectionModeProperty
 
         public static readonly BindableProperty SelectionModeProperty =
@@ -151,7 +177,7 @@ namespace XamarinForms.CalendarComponent.Components
                 returnType: typeof(CalendarControlSelectionMode),
                 propertyChanged: OnModeChanged,
                 declaringType: typeof(CalendarControl));
-        
+
         private static void OnModeChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendarControl = bindable as CalendarControl;
@@ -175,10 +201,10 @@ namespace XamarinForms.CalendarComponent.Components
         {
             InitializeGridForCalendarDays();
             AddCalendarDays();
-            
+
             SelectDayControls(SelectedDays);
         }
-        
+
         private void SelectDayControls(IEnumerable<DateTime> daysToSelect)
         {
             Days.ForEach(dayControl => dayControl.IsSelected = false);
@@ -196,7 +222,20 @@ namespace XamarinForms.CalendarComponent.Components
         private void InitializeGridForCalendarDays()
         {
             GridDays.Children.Clear();
-            
+
+            if (!ShowWeekends &&
+                GridDays.ColumnDefinitions.Count == 7)
+            {
+                GridDays.ColumnDefinitions.RemoveAt(GridDays.ColumnDefinitions.Count - 1);
+                GridDays.ColumnDefinitions.RemoveAt(GridDays.ColumnDefinitions.Count - 1);
+            }
+            else if (ShowWeekends &&
+                     GridDays.ColumnDefinitions.Count < 7)
+            {
+                GridDays.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
+                GridDays.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
+            }
+
             var gridRows = new RowDefinitionCollection();
 
             for (var i = 1; i <= Date.WeeksInMonth(FirstDayOfWeek); i++)
@@ -213,47 +252,76 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 return;
             }
-            
+
             if (Days.Count > 0)
             {
                 foreach (var dayControl in Days)
                 {
                     dayControl.Tapped -= DayComponent_OnTapped;
                 }
-                
+
                 Days.Clear();
             }
 
-            for (var i = 1; i <= Date.DaysInMonth(); i++)
+            var daysInWeek = 7;
+            var weeksInMonth = Date.WeeksInMonth(FirstDayOfWeek);
+            var daysInMonth = Date.DaysInMonth();
+            var day = 1;
+
+            for (var week = 1; week <= weeksInMonth; week++)
             {
-                var date = new DateTime(Date.Year, Date.Month, i);
-
-                var dayControl = new DayControl
+                for (var dayInWeek = 1; dayInWeek <= daysInWeek; dayInWeek++)
                 {
-                    Date = date,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    VerticalOptions =  LayoutOptions.CenterAndExpand,
-                };
+                    if (day > daysInMonth)
+                    {
+                        break;
+                    }
 
-                dayControl.ControlTemplate = DayControlTemplate;
+                    var date = new DateTime(Date.Year, Date.Month, day);
 
-                Grid.SetColumn(dayControl, date.DayOfWeek(FirstDayOfWeek) - 1);
-                Grid.SetRow(dayControl, date.WeekOfMonth(FirstDayOfWeek) - 1);
-                
-                dayControl.Tapped += DayComponent_OnTapped;
-                
-                Days.Add(dayControl);
-                GridDays.Children.Add(dayControl);
+                    if (date.WeekOfMonth(FirstDayOfWeek) != week)
+                    {
+                        break;
+                    }
 
-                DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
+                    day++;
+
+                    if (!ShowWeekends &&
+                        (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday))
+                    {
+                        continue;
+                    }
+
+                    var dayControl = new DayControl
+                    {
+                        Date = date,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                    };
+
+                    dayControl.ControlTemplate = DayControlTemplate;
+
+                    var column = date.DayOfWeek(FirstDayOfWeek, includeWeekends: ShowWeekends) - 1;
+                    Grid.SetColumn(dayControl, column);
+
+                    var row = week - 1;
+                    Grid.SetRow(dayControl, row);
+
+                    dayControl.Tapped += DayComponent_OnTapped;
+
+                    Days.Add(dayControl);
+                    GridDays.Children.Add(dayControl);
+
+                    DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
+                }
             }
-            
+
             if (SelectedDays?.Count > 0)
             {
                 SelectDayControls(SelectedDays);
             }
         }
-        
+
         private void DayComponent_OnTapped(object sender, EventArgs e)
         {
             var dayControl = sender as DayControl;
@@ -290,8 +358,21 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 return;
             }
-            
+
             GridWeekDayHeaders.Children.Clear();
+
+            if (!ShowWeekends &&
+                GridWeekDayHeaders.ColumnDefinitions.Count == 7)
+            {
+                GridWeekDayHeaders.ColumnDefinitions.RemoveAt(GridWeekDayHeaders.ColumnDefinitions.Count - 1);
+                GridWeekDayHeaders.ColumnDefinitions.RemoveAt(GridWeekDayHeaders.ColumnDefinitions.Count - 1);
+            }
+            else if (ShowWeekends &&
+                     GridWeekDayHeaders.ColumnDefinitions.Count < 7)
+            {
+                GridWeekDayHeaders.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
+                GridWeekDayHeaders.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Star});
+            }
 
             void AddWeekDayHeaderControl(DayOfWeek dayOfWeek, int weekDayNumber)
             {
@@ -305,25 +386,47 @@ namespace XamarinForms.CalendarComponent.Components
             }
 
             var currentDayOfWeek = FirstDayOfWeek;
-            
-            for (var i = 1; i <= 7; i++)
+            var daysInWeek = 7;
+
+            if (!ShowWeekends)
             {
-                AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
-                currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+                daysInWeek = 5;
+            }
+
+            for (var i = 1; i <= daysInWeek; i++)
+            {
+                if (ShowWeekends)
+                {
+                    AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
+                    currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+                }
+                else if (currentDayOfWeek != DayOfWeek.Saturday &&
+                         currentDayOfWeek != DayOfWeek.Sunday)
+                {
+                    AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
+
+                    currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+
+                    if (currentDayOfWeek == DayOfWeek.Saturday ||
+                        currentDayOfWeek == DayOfWeek.Sunday)
+                    {
+                        currentDayOfWeek = DayOfWeek.Monday;
+                    }
+                }
             }
         }
     }
-    
+
     public class DayControlAddedEventArgs : EventArgs
     {
         public DayControl DayControl { get; }
-        
+
         public DayControlAddedEventArgs(DayControl dayControl)
         {
             DayControl = dayControl;
         }
     }
-    
+
     public class DayControlTappedEventArgs : EventArgs
     {
         public DayControl DayControl { get; }

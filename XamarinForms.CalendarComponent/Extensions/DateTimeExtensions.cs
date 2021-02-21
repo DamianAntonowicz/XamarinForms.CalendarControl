@@ -36,12 +36,18 @@ namespace System
             return weekOfMonth;
         }
 
-        public static int DayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
+        public static int DayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek, bool includeWeekends = false)
         {
             var currentDayOfWeek = firstDayOfWeek;
             var dayOfWeek = 1;
+            var daysInWeek = 7;
+
+            if (!includeWeekends)
+            {
+                daysInWeek = 5;
+            }
             
-            for (var i = 1; i <= 7; i++)
+            for (var i = 1; i <= daysInWeek; i++)
             {
                 if (currentDayOfWeek == dateTime.DayOfWeek)
                 {
@@ -49,6 +55,13 @@ namespace System
                 }
                 
                 currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+                
+                if (!includeWeekends && 
+                    (currentDayOfWeek == System.DayOfWeek.Saturday || currentDayOfWeek == System.DayOfWeek.Sunday))
+                {
+                    currentDayOfWeek = System.DayOfWeek.Monday;
+                }
+                
                 dayOfWeek++;
             }
 
