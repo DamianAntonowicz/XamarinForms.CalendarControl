@@ -395,23 +395,14 @@ namespace XamarinForms.CalendarComponent.Components
 
             for (var i = 1; i <= daysInWeek; i++)
             {
-                if (ShowWeekends)
-                {
-                    AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
-                    currentDayOfWeek = currentDayOfWeek.NextOrFirst();
-                }
-                else if (currentDayOfWeek != DayOfWeek.Saturday &&
-                         currentDayOfWeek != DayOfWeek.Sunday)
-                {
-                    AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
+                AddWeekDayHeaderControl(currentDayOfWeek, weekDayNumber: i);
 
-                    currentDayOfWeek = currentDayOfWeek.NextOrFirst();
+                currentDayOfWeek = currentDayOfWeek.NextOrFirst();
 
-                    if (currentDayOfWeek == DayOfWeek.Saturday ||
-                        currentDayOfWeek == DayOfWeek.Sunday)
-                    {
-                        currentDayOfWeek = DayOfWeek.Monday;
-                    }
+                if (!ShowWeekends &&
+                    (currentDayOfWeek == DayOfWeek.Saturday || currentDayOfWeek == DayOfWeek.Sunday))
+                {
+                    currentDayOfWeek = DayOfWeek.Monday;
                 }
             }
         }
