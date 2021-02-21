@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xamarin.Forms;
 using XamarinForms.CalendarComponent.Components;
 
@@ -11,10 +12,10 @@ namespace XamarinForms.CalendarComponent
             InitializeComponent();
 
             PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
-            PickerFirstDayOfWeek.SelectedItem = DayOfWeek.Monday;
-
+            PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
+            
             PickerSelectionMode.ItemsSource = Enum.GetValues(typeof(CalendarControlSelectionMode));
-            PickerSelectionMode.SelectedItem = CalendarControlSelectionMode.MultiSelect;
+            PickerSelectionMode.SelectedItem = CalendarControl.SelectionMode;
         }
 
         private void CalendarControl_OnDayAdded(object sender, DayControlAddedEventArgs e)
@@ -42,20 +43,28 @@ namespace XamarinForms.CalendarComponent
         {
             CalendarControl.Date = CalendarControl.Date.AddMonths(1);
         }
-        
-        private void ButtonSingleSelect_OnClicked(object sender, EventArgs e)
-        {
-            CalendarControl.SelectionMode = CalendarControlSelectionMode.SingleSelect;
-        }
-        
-        private void ButtonMultiselect_OnClicked(object sender, EventArgs e)
-        {
-            CalendarControl.SelectionMode = CalendarControlSelectionMode.MultiSelect;
-        }
 
         private async void CalendarControl_OnDayTapped(object sender, DayControlTappedEventArgs e)
         {
             //await DisplayAlert(title: "", message: "You clicked on: " + e.DayControl.Date, cancel: "ok");
+        }
+
+        private void CheckBoxShowWeekends_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (CheckBoxShowWeekends.IsChecked)
+            {
+                PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
+            }
+            else
+            {
+                var values = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().ToList();
+                values.Remove(DayOfWeek.Saturday);
+                values.Remove(DayOfWeek.Sunday);
+
+                PickerFirstDayOfWeek.ItemsSource = values;
+            }
+
+            PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
         }
     }
 }

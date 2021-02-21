@@ -27,8 +27,18 @@ namespace XamarinForms.CalendarComponent.Components
         private static void OnShowWeekendsChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeWeekDayHeaders();
-            calendarControl.InitializeCalendarDays();
+
+            if (!calendarControl.ShowWeekends &&
+                (calendarControl.FirstDayOfWeek == DayOfWeek.Saturday ||
+                 calendarControl.FirstDayOfWeek == DayOfWeek.Sunday))
+            {
+                calendarControl.FirstDayOfWeek = DayOfWeek.Monday;
+            }
+            else
+            {
+                calendarControl.InitializeWeekDayHeaders();
+                calendarControl.InitializeCalendarDays();    
+            }
         }
 
         public bool ShowWeekends

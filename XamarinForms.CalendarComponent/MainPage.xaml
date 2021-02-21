@@ -61,9 +61,9 @@
                                     DayAdded="CalendarControl_OnDayAdded"
                                     DayTapped="CalendarControl_OnDayTapped"
                                     ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
-                                    FirstDayOfWeek="{Binding SelectedItem, Source={x:Reference PickerFirstDayOfWeek}}"
+                                    FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
                                     Date="01/01/21"
-                                    SelectionMode="{Binding SelectedItem, Source={x:Reference PickerSelectionMode}}"
+                                    SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}" />
 
@@ -80,7 +80,7 @@
 
                 <Label Text="First day of week"
                        Margin="0,10,0,0" />
-                <Picker x:Name="PickerFirstDayOfWeek" />
+                <Picker x:Name="PickerFirstDayOfWeek"/>
 
                 <Label Text="Selection mode"
                        Margin="0,10,0,0" />
@@ -90,6 +90,7 @@
                              Padding="0"
                              Spacing="0">
                     <CheckBox x:Name="CheckBoxShowWeekends"
+                              CheckedChanged="CheckBoxShowWeekends_OnCheckedChanged"
                               Margin="-10,0,0,0"
                               IsChecked="True" />
                     <Label Text="Show weekends"
