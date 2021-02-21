@@ -61,7 +61,7 @@
                                     DayTapped="CalendarControl_OnDayTapped"
                                     FirstDayOfWeek="{Binding SelectedItem, Source={x:Reference PickerFirstDayOfWeek}}"
                                     Date="02/01/21"
-                                    SelectionMode="MultiSelect"
+                                    SelectionMode="{Binding SelectedItem, Source={x:Reference PickerSelectionMode}}"
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
         
@@ -76,17 +76,14 @@
             <Label Text="First day of week"/>
             <Picker x:Name="PickerFirstDayOfWeek"/>
             
+            <Label Text="Selection mode"/>
+            <Picker x:Name="PickerSelectionMode"/>
+            
             <Button Text="previous month"
                     Clicked="ButtonPreviousMonth_OnClicked"/>
             
             <Button Text="next month"
                     Clicked="ButtonNextMonth_OnClicked"/>
-            
-            <Button Text="singleselect"
-                    Clicked="ButtonSingleSelect_OnClicked"/>
-            
-            <Button Text="multiselect"
-                    Clicked="ButtonMultiselect_OnClicked"/>
             
         </StackLayout>
     </StackLayout>
