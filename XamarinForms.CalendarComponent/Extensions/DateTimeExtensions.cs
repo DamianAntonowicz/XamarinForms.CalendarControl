@@ -36,7 +36,7 @@ namespace System
             return weekOfMonth;
         }
 
-        public static int DayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek, bool includeWeekends = false)
+        public static int DayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek, bool includeWeekends)
         {
             var currentDayOfWeek = firstDayOfWeek;
             var dayOfWeek = 1;
