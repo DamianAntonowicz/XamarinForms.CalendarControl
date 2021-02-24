@@ -250,7 +250,10 @@ namespace XamarinForms.CalendarComponent.Components
 
             for (var i = 1; i <= Date.WeeksInMonth(FirstDayOfWeek); i++)
             {
-                gridRows.Add(new RowDefinition());
+                gridRows.Add(new RowDefinition
+                {
+                    Height = GridLength.Auto
+                });
             }
 
             GridDays.RowDefinitions = gridRows;
