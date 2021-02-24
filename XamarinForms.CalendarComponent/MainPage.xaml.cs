@@ -27,10 +27,16 @@ namespace XamarinForms.CalendarComponent
                 e.DayControl.BindingContext = "weekend";
             }
 
-            if (e.DayControl.Date.Day == 1 ||
+            if (e.DayControl.Date.Day == 3 ||
                 e.DayControl.Date.Day == 10)
             {
                 e.DayControl.IsSelectable = false;
+            }
+
+            if (e.DayControl.Date.Month != CalendarControl.Date.Month)
+            {
+                e.DayControl.IsSelectable = false;
+                e.DayControl.ControlTemplate = Resources["DayControlFromOtherMonthTemplate"] as ControlTemplate;
             }
         }
 

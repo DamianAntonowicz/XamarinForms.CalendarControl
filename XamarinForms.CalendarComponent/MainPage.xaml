@@ -39,6 +39,16 @@
 
             </Grid>
         </ControlTemplate>
+        
+        <ControlTemplate x:Key="DayControlFromOtherMonthTemplate">
+            <Grid Padding="10"
+                  BackgroundColor="LightSlateGray">
+
+                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                       TextColor="Blue" />
+
+            </Grid>
+        </ControlTemplate>
 
         <ControlTemplate x:Key="DayControlTemplate2">
             <StackLayout>
@@ -61,6 +71,7 @@
                                     DayAdded="CalendarControl_OnDayAdded"
                                     DayTapped="CalendarControl_OnDayTapped"
                                     ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
+                                    ShowDaysFromOtherMonths="{Binding IsChecked, Source={x:Reference CheckBoxShowDaysFromOtherMonths}}"
                                     FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
                                     Date="01/01/21"
                                     SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
@@ -94,6 +105,16 @@
                               Margin="-10,0,0,0"
                               IsChecked="True" />
                     <Label Text="Show weekends"
+                           VerticalOptions="Center" />
+                </StackLayout>
+                
+                <StackLayout Orientation="Horizontal"
+                             Padding="0"
+                             Spacing="0">
+                    <CheckBox x:Name="CheckBoxShowDaysFromOtherMonths"
+                              Margin="-10,0,0,0"
+                              IsChecked="True" />
+                    <Label Text="Show days from other months"
                            VerticalOptions="Center" />
                 </StackLayout>
 
