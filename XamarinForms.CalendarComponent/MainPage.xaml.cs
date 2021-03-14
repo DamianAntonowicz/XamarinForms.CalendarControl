@@ -23,14 +23,19 @@ namespace XamarinForms.CalendarComponent
             if (e.DayControl.Date.DayOfWeek == DayOfWeek.Saturday ||
                 e.DayControl.Date.DayOfWeek == DayOfWeek.Sunday)
             {
-                e.DayControl.ControlTemplate = Resources["DayControlTemplate2"] as ControlTemplate;
-                e.DayControl.BindingContext = "weekend";
+                e.DayControl.ControlTemplate = Resources["DayControlTemplateWeekend"] as ControlTemplate;
             }
 
             if (e.DayControl.Date.Day == 3 ||
                 e.DayControl.Date.Day == 10)
             {
                 e.DayControl.IsSelectable = false;
+            }
+            
+            if (e.DayControl.Date.Day == 5 ||
+                e.DayControl.Date.Day == 16)
+            {
+                e.DayControl.BindingContext = new Day {HasAppointments = true};
             }
 
             if (e.DayControl.Date.Month != CalendarControl.Date.Month)
@@ -72,5 +77,10 @@ namespace XamarinForms.CalendarComponent
 
             PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
         }
+    }
+
+    public class Day
+    {
+        public bool HasAppointments { get; set; }
     }
 }

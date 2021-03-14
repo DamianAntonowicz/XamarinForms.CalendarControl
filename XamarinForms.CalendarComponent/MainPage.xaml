@@ -3,69 +3,205 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:components="clr-namespace:XamarinForms.CalendarComponent.Components;assembly=XamarinForms.CalendarComponent"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:converters="clr-namespace:XamarinForms.CalendarComponent.Converters;assembly=XamarinForms.CalendarComponent"
              ios:Page.UseSafeArea="true"
              x:Class="XamarinForms.CalendarComponent.MainPage">
 
     <ContentPage.Resources>
 
+        <converters:DayOfWeekToAbbreviatedName x:Key="DayOfWeekToAbbreviatedName" />
+
         <ControlTemplate x:Key="WeekDayControlTemplate">
-            <Label Text="{TemplateBinding DayOfWeek}"
+            <Label Text="{TemplateBinding DayOfWeek, Converter={StaticResource DayOfWeekToAbbreviatedName}}"
+                   TextColor="LightSlateGray"
+                   HorizontalOptions="Center"
                    FontSize="Small" />
         </ControlTemplate>
 
         <ControlTemplate x:Key="DayControlTemplate">
-            <Grid Padding="10">
+            <Grid>
 
-                <Grid.Triggers>
+                <BoxView Color="LightGray"
+                         CornerRadius="5">
 
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{TemplateBinding IsSelected}"
-                                 Value="True">
-                        <Setter Property="BackgroundColor"
-                                Value="LightGreen" />
-                    </DataTrigger>
+                    <BoxView.Triggers>
 
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{TemplateBinding IsSelectable}"
-                                 Value="False">
-                        <Setter Property="BackgroundColor"
-                                Value="LightSlateGray" />
-                    </DataTrigger>
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="Color"
+                                    Value="Green" />
+                        </DataTrigger>
 
-                </Grid.Triggers>
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="Color"
+                                    Value="#f2f2f2" />
+                        </DataTrigger>
+
+                    </BoxView.Triggers>
+
+                </BoxView>
+
+                <BoxView Color="White"
+                         Margin="1"
+                         CornerRadius="5">
+
+                    <BoxView.Triggers>
+
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="Color"
+                                    Value="LightGreen" />
+                        </DataTrigger>
+
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="Color"
+                                    Value="#f2f2f2" />
+                        </DataTrigger>
+
+                    </BoxView.Triggers>
+
+                </BoxView>
 
                 <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
-                       TextColor="Blue" />
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="Medium"
+                       TextColor="Black">
+
+                    <Label.Triggers>
+
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="Gray" />
+                        </DataTrigger>
+
+                    </Label.Triggers>
+
+                </Label>
+                
+                <Ellipse WidthRequest="5"
+                         HeightRequest="5"
+                         VerticalOptions="End"
+                         HorizontalOptions="Center"
+                         Margin="0,0,0,5"
+                         IsVisible="False"
+                         Stroke="Red"
+                         Fill="Red">
+                    
+                    <Ellipse.Triggers>
+                        
+                        <DataTrigger TargetType="Ellipse"
+                                     Binding="{TemplateBinding BindingContext.HasAppointments}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                        
+                    </Ellipse.Triggers>
+                    
+                </Ellipse>
 
             </Grid>
         </ControlTemplate>
-        
+
         <ControlTemplate x:Key="DayControlFromOtherMonthTemplate">
-            <Grid Padding="10"
-                  BackgroundColor="LightSlateGray">
+            <Grid>
+
+                <BoxView Color="#f2f2f2"
+                         CornerRadius="5" />
 
                 <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
-                       TextColor="Blue" />
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="Medium"
+                       TextColor="Gray" />
 
             </Grid>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="DayControlTemplate2">
-            <StackLayout>
+        <ControlTemplate x:Key="DayControlTemplateWeekend">
+            <Grid>
+
+                <BoxView Color="LightGray"
+                         CornerRadius="5">
+
+                    <BoxView.Triggers>
+
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="Color"
+                                    Value="Green" />
+                        </DataTrigger>
+                        
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="Color"
+                                    Value="#f2f2f2" />
+                        </DataTrigger>
+
+                    </BoxView.Triggers>
+
+                </BoxView>
+
+                <BoxView Color="#f2f2f2"
+                         Margin="1"
+                         CornerRadius="5">
+
+                    <BoxView.Triggers>
+
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelected}"
+                                     Value="True">
+                            <Setter Property="Color"
+                                    Value="LightGreen" />
+                        </DataTrigger>
+                        
+                        <DataTrigger TargetType="BoxView"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="Color"
+                                    Value="#f2f2f2" />
+                        </DataTrigger>
+
+                    </BoxView.Triggers>
+
+                </BoxView>
+
                 <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
-                       TextColor="Brown" />
-                <Label Text="{TemplateBinding BindingContext}"
-                       FontSize="Micro"
-                       TextColor="Black" />
-            </StackLayout>
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="Medium"
+                       TextColor="Black">
+                    
+                    <Label.Triggers>
+
+                        <DataTrigger TargetType="Label"
+                                     Binding="{TemplateBinding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="Gray" />
+                        </DataTrigger>
+
+                    </Label.Triggers>
+
+                </Label>
+
+            </Grid>
         </ControlTemplate>
 
     </ContentPage.Resources>
 
     <StackLayout Spacing="0">
-
-        <components:DayControl Date="04/17/04"
-                               ControlTemplate="{StaticResource DayControlTemplate}" />
 
         <components:CalendarControl x:Name="CalendarControl"
                                     DayAdded="CalendarControl_OnDayAdded"
@@ -78,20 +214,29 @@
                                     DayControlTemplate="{StaticResource DayControlTemplate}"
                                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}" />
 
-        <StackLayout Padding="10">
+        <StackLayout Padding="10"
+                     Margin="0,20,0,0">
 
             <Label Text="Selected days:" />
             <StackLayout BindableLayout.ItemsSource="{Binding SelectedDays, Source={x:Reference CalendarControl}}"
-                         HorizontalOptions="Start" />
+                         Orientation="Horizontal"
+                         HorizontalOptions="Start">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding ., StringFormat='{0:dd}'}"></Label>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+                
+            </StackLayout>
 
-            <StackLayout VerticalOptions="EndAndExpand">
+                <StackLayout VerticalOptions="EndAndExpand">
 
-                <Label Text="{Binding Date, Source={x:Reference CalendarControl}, StringFormat='Current month: {0}'}"
-                       Margin="0,10,0,0"/>
+                <Label Text="{Binding Date, Source={x:Reference CalendarControl}, StringFormat='Current month: {0:M/yyy}'}"
+                       Margin="0,10,0,0" />
 
                 <Label Text="First day of week"
                        Margin="0,10,0,0" />
-                <Picker x:Name="PickerFirstDayOfWeek"/>
+                <Picker x:Name="PickerFirstDayOfWeek" />
 
                 <Label Text="Selection mode"
                        Margin="0,10,0,0" />
@@ -107,7 +252,7 @@
                     <Label Text="Show weekends"
                            VerticalOptions="Center" />
                 </StackLayout>
-                
+
                 <StackLayout Orientation="Horizontal"
                              Padding="0"
                              Spacing="0">
