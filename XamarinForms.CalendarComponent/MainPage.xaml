@@ -5,7 +5,8 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:converters="clr-namespace:XamarinForms.CalendarComponent.Converters;assembly=XamarinForms.CalendarComponent"
              ios:Page.UseSafeArea="true"
-             x:Class="XamarinForms.CalendarComponent.MainPage">
+             x:Class="XamarinForms.CalendarComponent.MainPage"
+             BackgroundColor="White">
 
     <ContentPage.Resources>
 
