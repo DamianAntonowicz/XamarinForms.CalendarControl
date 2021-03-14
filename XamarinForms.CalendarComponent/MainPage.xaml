@@ -10,6 +10,7 @@
     <ContentPage.Resources>
 
         <converters:DayOfWeekToAbbreviatedName x:Key="DayOfWeekToAbbreviatedName" />
+        <converters:DateTimeToDayConverter x:Key="DateTimeToDayConverter" />
 
         <ControlTemplate x:Key="WeekDayControlTemplate">
             <Label Text="{TemplateBinding DayOfWeek, Converter={StaticResource DayOfWeekToAbbreviatedName}}"
@@ -68,7 +69,7 @@
 
                 </BoxView>
 
-                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                <Label Text="{TemplateBinding Date, Converter={StaticResource DateTimeToDayConverter}}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        FontSize="Medium"
@@ -118,7 +119,7 @@
                 <BoxView Color="#f2f2f2"
                          CornerRadius="5" />
 
-                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                <Label Text="{TemplateBinding Date, Converter={StaticResource DateTimeToDayConverter}}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        FontSize="Medium"
@@ -177,7 +178,7 @@
 
                 </BoxView>
 
-                <Label Text="{TemplateBinding Date, StringFormat='{0:dd}'}"
+                <Label Text="{TemplateBinding Date, Converter={StaticResource DateTimeToDayConverter}}"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        FontSize="Medium"
@@ -223,7 +224,7 @@
                          HorizontalOptions="Start">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding ., StringFormat='{0:dd}'}"></Label>
+                        <Label Text="{Binding ., Converter={StaticResource DateTimeToDayConverter}}"/>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
                 
