@@ -358,7 +358,7 @@ namespace XamarinForms.CalendarComponent.Components
                     newDate = newDate.AddDays(-1);
 
                     if (!ShowWeekends &&
-                        (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday))
+                        (newDate.DayOfWeek == DayOfWeek.Saturday || newDate.DayOfWeek == DayOfWeek.Sunday))
                     {
                         continue;
                     }
@@ -378,7 +378,7 @@ namespace XamarinForms.CalendarComponent.Components
                     newDate = newDate.AddDays(1);
 
                     if (!ShowWeekends &&
-                        (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday))
+                        (newDate.DayOfWeek == DayOfWeek.Saturday || newDate.DayOfWeek == DayOfWeek.Sunday))
                     {
                         continue;
                     }
