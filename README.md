@@ -1,4 +1,4 @@
-# Calendar control for XamarinForms
+# Calendar control for Xamarin.Forms
 
 This repository contains CalendarControl with following features:
 - customizing specific day with ControlTemplate
