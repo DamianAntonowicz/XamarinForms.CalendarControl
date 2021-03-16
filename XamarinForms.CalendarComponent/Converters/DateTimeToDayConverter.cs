@@ -8,6 +8,11 @@ namespace XamarinForms.CalendarComponent.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return null;
+            }
+        
             var dateTime = (DateTime) value;
             var day = dateTime.Day.ToString();
 
