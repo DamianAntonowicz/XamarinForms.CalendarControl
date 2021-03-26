@@ -215,8 +215,8 @@
                                  FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
                                  Date="01/01/21"
                                  SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
-                                 CalendarDayControlTemplate="{StaticResource CalendarDayControlTemplate}"
-                                 CalendarWeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}"/>
+                                 DayControlTemplate="{StaticResource CalendarDayControlTemplate}"
+                                 WeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}"/>
 
             <StackLayout Padding="10"
                          Margin="0,20,0,0">

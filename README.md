@@ -19,8 +19,8 @@ This repository contains Calendar control with following features:
                      ShowDaysFromOtherMonths="True"
                      FirstDayOfWeek="Sunday"
                      SelectionMode="SingleSelect"
-                     CalendarDayControlTemplate="{StaticResource CalendarDayControlTemplate}"
-                     CalendarWeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}" />
+                     DayControlTemplate="{StaticResource CalendarDayControlTemplate}"
+                     WeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}"/>
 ```
 
 ## Screenshots

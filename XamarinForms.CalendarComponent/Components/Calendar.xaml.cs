@@ -79,7 +79,7 @@ namespace XamarinForms.CalendarComponent.Components
 
         public static readonly BindableProperty FirstDayOfWeekProperty =
             BindableProperty.Create(
-                propertyName: nameof(CalendarWeekDayHeaderControlTemplateProperty),
+                propertyName: nameof(WeekDayHeaderControlTemplateProperty),
                 returnType: typeof(DayOfWeek),
                 declaringType: typeof(Calendar),
                 defaultValue: DayOfWeek.Monday,
@@ -100,48 +100,48 @@ namespace XamarinForms.CalendarComponent.Components
 
         #endregion
 
-        #region CalendarWeekDayHeaderTemplateProperty
+        #region WeekDayHeaderControlTemplateProperty
 
-        public static readonly BindableProperty CalendarWeekDayHeaderControlTemplateProperty =
+        public static readonly BindableProperty WeekDayHeaderControlTemplateProperty =
             BindableProperty.Create(
-                propertyName: nameof(CalendarWeekDayHeaderControlTemplateProperty),
+                propertyName: nameof(WeekDayHeaderControlTemplateProperty),
                 returnType: typeof(ControlTemplate),
                 declaringType: typeof(Calendar),
-                propertyChanged: OnCalendarWeekDayHeaderControlTemplateChanged);
+                propertyChanged: OnWeekDayHeaderControlTemplateChanged);
 
-        private static void OnCalendarWeekDayHeaderControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnWeekDayHeaderControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendar = bindable as Calendar;
             calendar.InitializeWeekDayHeaders();
         }
 
-        public ControlTemplate CalendarWeekDayHeaderControlTemplate
+        public ControlTemplate WeekDayHeaderControlTemplate
         {
-            get => (ControlTemplate) GetValue(CalendarWeekDayHeaderControlTemplateProperty);
-            set => SetValue(CalendarWeekDayHeaderControlTemplateProperty, value);
+            get => (ControlTemplate) GetValue(WeekDayHeaderControlTemplateProperty);
+            set => SetValue(WeekDayHeaderControlTemplateProperty, value);
         }
 
         #endregion
 
-        #region CalendarDayTemplateProperty
+        #region DayControlTemplateProperty
 
-        public static readonly BindableProperty CalendarDayControlTemplateProperty =
+        public static readonly BindableProperty DayControlTemplateProperty =
             BindableProperty.Create(
-                propertyName: nameof(CalendarDayControlTemplate),
+                propertyName: nameof(DayControlTemplate),
                 returnType: typeof(ControlTemplate),
                 declaringType: typeof(Calendar),
-                propertyChanged: OnCalendarDayControlTemplateChanged);
+                propertyChanged: OnDayControlTemplateChanged);
 
-        private static void OnCalendarDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendar = bindable as Calendar;
             calendar.InitializeCalendarDays();
         }
 
-        public ControlTemplate CalendarDayControlTemplate
+        public ControlTemplate DayControlTemplate
         {
-            get => (ControlTemplate) GetValue(CalendarDayControlTemplateProperty);
-            set => SetValue(CalendarDayControlTemplateProperty, value);
+            get => (ControlTemplate) GetValue(DayControlTemplateProperty);
+            set => SetValue(DayControlTemplateProperty, value);
         }
 
         #endregion
@@ -287,7 +287,7 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void AddCalendarDays()
         {
-            if (CalendarDayControlTemplate == null)
+            if (DayControlTemplate == null)
             {
                 return;
             }
@@ -396,9 +396,8 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
+                ControlTemplate = DayControlTemplate
             };
-
-            calendarDay.ControlTemplate = CalendarDayControlTemplate;
 
             var column = date.DayOfWeek(FirstDayOfWeek, includeWeekends: ShowWeekends) - 1;
             Grid.SetColumn(calendarDay, column);
@@ -448,7 +447,7 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void InitializeWeekDayHeaders()
         {
-            if (CalendarWeekDayHeaderControlTemplate == null)
+            if (WeekDayHeaderControlTemplate == null)
             {
                 return;
             }
@@ -472,7 +471,7 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 var weekDayControl = new CalendarWeekDayHeader(dayOfWeek)
                 {
-                    ControlTemplate = CalendarWeekDayHeaderControlTemplate
+                    ControlTemplate = WeekDayHeaderControlTemplate
                 };
 
                 Grid.SetColumn(weekDayControl, weekDayNumber - 1);
