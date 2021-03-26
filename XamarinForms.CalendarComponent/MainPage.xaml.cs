@@ -23,7 +23,7 @@ namespace XamarinForms.CalendarComponent
             if (e.CalendarDay.Date.DayOfWeek == DayOfWeek.Saturday ||
                 e.CalendarDay.Date.DayOfWeek == DayOfWeek.Sunday)
             {
-                e.CalendarDay.ControlTemplate = Resources["CalendarDayTemplateWeekend"] as ControlTemplate;
+                e.CalendarDay.ControlTemplate = Resources["CalendarDayControlTemplateWeekend"] as ControlTemplate;
             }
 
             if (e.CalendarDay.Date.Day == 3 ||
@@ -41,7 +41,7 @@ namespace XamarinForms.CalendarComponent
             if (e.CalendarDay.Date.Month != Calendar.Date.Month)
             {
                 e.CalendarDay.IsSelectable = false;
-                e.CalendarDay.ControlTemplate = Resources["CalendarDayFromOtherMonthTemplate"] as ControlTemplate;
+                e.CalendarDay.ControlTemplate = Resources["CalendarDayFromOtherMonthControlTemplate"] as ControlTemplate;
             }
         }
 

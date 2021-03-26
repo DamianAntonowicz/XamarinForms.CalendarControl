@@ -3,14 +3,14 @@ using Xamarin.Forms;
 
 namespace XamarinForms.CalendarComponent.Components
 {
-    public class WeekDayHeaderControl : TemplatedView
+    public class CalendarWeekDayHeader : TemplatedView
     {
         public DayOfWeek DayOfWeek
         {
             get;
         }
         
-        public WeekDayHeaderControl(DayOfWeek dayOfWeek)
+        public CalendarWeekDayHeader(DayOfWeek dayOfWeek)
         {
             DayOfWeek = dayOfWeek;
         }

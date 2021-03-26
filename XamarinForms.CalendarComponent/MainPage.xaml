@@ -13,14 +13,14 @@
         <converters:DayOfWeekToAbbreviatedName x:Key="DayOfWeekToAbbreviatedName" />
         <converters:DateTimeToDayConverter x:Key="DateTimeToDayConverter" />
 
-        <ControlTemplate x:Key="WeekDayControlTemplate">
+        <ControlTemplate x:Key="CalendarWeekDayHeaderControlTemplate">
             <Label Text="{TemplateBinding DayOfWeek, Converter={StaticResource DayOfWeekToAbbreviatedName}}"
                    TextColor="LightSlateGray"
                    HorizontalOptions="Center"
                    FontSize="Small" />
         </ControlTemplate>
 
-        <ControlTemplate x:Key="CalendarDayTemplate">
+        <ControlTemplate x:Key="CalendarDayControlTemplate">
             <Grid>
 
                 <BoxView Color="LightGray"
@@ -114,7 +114,7 @@
             </Grid>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="CalendarDayFromOtherMonthTemplate">
+        <ControlTemplate x:Key="CalendarDayFromOtherMonthControlTemplate">
             <Grid>
 
                 <BoxView Color="#f2f2f2"
@@ -129,7 +129,7 @@
             </Grid>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="CalendarDayTemplateWeekend">
+        <ControlTemplate x:Key="CalendarDayControlTemplateWeekend">
             <Grid>
 
                 <BoxView Color="LightGray"
@@ -215,8 +215,8 @@
                                  FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
                                  Date="01/01/21"
                                  SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
-                                 CalendarDayTemplate="{StaticResource CalendarDayTemplate}"
-                                 WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
+                                 CalendarDayControlTemplate="{StaticResource CalendarDayControlTemplate}"
+                                 CalendarWeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}"/>
 
             <StackLayout Padding="10"
                          Margin="0,20,0,0">
