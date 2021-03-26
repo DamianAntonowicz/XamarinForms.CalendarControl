@@ -14,7 +14,7 @@ namespace XamarinForms.CalendarComponent
             PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
             PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
             
-            PickerSelectionMode.ItemsSource = Enum.GetValues(typeof(CalendarControlSelectionMode));
+            PickerSelectionMode.ItemsSource = Enum.GetValues(typeof(CalendarSelectionMode));
             PickerSelectionMode.SelectedItem = CalendarControl.SelectionMode;
         }
 

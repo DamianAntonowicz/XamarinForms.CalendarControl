@@ -161,7 +161,7 @@ namespace XamarinForms.CalendarComponent.Components
             var daysToSelect = newValue as IList<DateTime>;
             var calendarControl = bindable as CalendarControl;
 
-            if (calendarControl.SelectionMode == CalendarControlSelectionMode.SingleSelect)
+            if (calendarControl.SelectionMode == CalendarSelectionMode.SingleSelect)
             {
                 if (daysToSelect != null &&
                     daysToSelect.Count > 1)
@@ -210,7 +210,7 @@ namespace XamarinForms.CalendarComponent.Components
         public static readonly BindableProperty SelectionModeProperty =
             BindableProperty.Create(
                 propertyName: nameof(SelectionMode),
-                returnType: typeof(CalendarControlSelectionMode),
+                returnType: typeof(CalendarSelectionMode),
                 propertyChanged: OnModeChanged,
                 declaringType: typeof(CalendarControl));
 
@@ -220,9 +220,9 @@ namespace XamarinForms.CalendarComponent.Components
             calendarControl.SelectedDays = new List<DateTime>().AsReadOnly();
         }
 
-        public CalendarControlSelectionMode SelectionMode
+        public CalendarSelectionMode SelectionMode
         {
-            get => (CalendarControlSelectionMode) GetValue(SelectionModeProperty);
+            get => (CalendarSelectionMode) GetValue(SelectionModeProperty);
             set => SetValue(SelectionModeProperty, value);
         }
 
@@ -422,11 +422,11 @@ namespace XamarinForms.CalendarComponent.Components
 
             if (dayControl.IsSelectable)
             {
-                if (SelectionMode == CalendarControlSelectionMode.SingleSelect)
+                if (SelectionMode == CalendarSelectionMode.SingleSelect)
                 {
                     SelectedDays = new[] {dayControl.Date};
                 }
-                else if (SelectionMode == CalendarControlSelectionMode.MultiSelect)
+                else if (SelectionMode == CalendarSelectionMode.MultiSelect)
                 {
                     var newSelectedDays = SelectedDays.ToList();
 
@@ -523,7 +523,7 @@ namespace XamarinForms.CalendarComponent.Components
         }
     }
 
-    public enum CalendarControlSelectionMode
+    public enum CalendarSelectionMode
     {
         SingleSelect,
         MultiSelect
