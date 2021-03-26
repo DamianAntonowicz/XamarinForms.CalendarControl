@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinForms.CalendarComponent.Components
 {
-    public class DayControl : TemplatedView
+    public class CalendarDay : TemplatedView
     {
         #region IsSelectableProperty
 
@@ -12,7 +12,7 @@ namespace XamarinForms.CalendarComponent.Components
                 propertyName: nameof(IsSelectable),
                 returnType: typeof(bool),
                 defaultValue: true,
-                declaringType: typeof(DayControl));
+                declaringType: typeof(CalendarDay));
 
         public bool IsSelectable
         {
@@ -28,7 +28,7 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(IsSelected),
                 returnType: typeof(bool),
-                declaringType: typeof(DayControl));
+                declaringType: typeof(CalendarDay));
 
         public bool IsSelected
         {
@@ -43,7 +43,7 @@ namespace XamarinForms.CalendarComponent.Components
             get;
         }
 
-        public DayControl(DateTime date)
+        public CalendarDay(DateTime date)
         {
             Date = date;
         }

@@ -20,7 +20,7 @@
                    FontSize="Small" />
         </ControlTemplate>
 
-        <ControlTemplate x:Key="DayControlTemplate">
+        <ControlTemplate x:Key="CalendarDayTemplate">
             <Grid>
 
                 <BoxView Color="LightGray"
@@ -114,7 +114,7 @@
             </Grid>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="DayControlFromOtherMonthTemplate">
+        <ControlTemplate x:Key="CalendarDayFromOtherMonthTemplate">
             <Grid>
 
                 <BoxView Color="#f2f2f2"
@@ -129,7 +129,7 @@
             </Grid>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="DayControlTemplateWeekend">
+        <ControlTemplate x:Key="CalendarDayTemplateWeekend">
             <Grid>
 
                 <BoxView Color="LightGray"
@@ -215,7 +215,7 @@
                                  FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
                                  Date="01/01/21"
                                  SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
-                                 DayControlTemplate="{StaticResource DayControlTemplate}"
+                                 CalendarDayTemplate="{StaticResource CalendarDayTemplate}"
                                  WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
 
             <StackLayout Padding="10"

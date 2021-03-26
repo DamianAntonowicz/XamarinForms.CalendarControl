@@ -8,12 +8,12 @@ namespace XamarinForms.CalendarComponent.Components
 {
     public partial class Calendar : ContentView
     {
-        private readonly List<DayControl> _days = new List<DayControl>();
+        private readonly List<CalendarDay> _days = new List<CalendarDay>();
     
-        public IReadOnlyCollection<DayControl> Days => new ReadOnlyCollection<DayControl>(_days);
+        public IReadOnlyCollection<CalendarDay> Days => new ReadOnlyCollection<CalendarDay>(_days);
 
-        public event EventHandler<DayControlTappedEventArgs> DayTapped;
-        public event EventHandler<DayControlAddedEventArgs> DayAdded;
+        public event EventHandler<CalendarDayTappedEventArgs> DayTapped;
+        public event EventHandler<CalendarDayAddedEventArgs> DayAdded;
 
         #region ShowDaysFromOtherMonthsProperty
 
@@ -123,25 +123,25 @@ namespace XamarinForms.CalendarComponent.Components
 
         #endregion
 
-        #region DayControlTemplateProperty
+        #region CalendarDayTemplateProperty
 
-        public static readonly BindableProperty DayControlTemplateProperty =
+        public static readonly BindableProperty CalendarDayTemplateProperty =
             BindableProperty.Create(
-                propertyName: nameof(DayControlTemplate),
+                propertyName: nameof(CalendarDayTemplate),
                 returnType: typeof(ControlTemplate),
                 declaringType: typeof(Calendar),
-                propertyChanged: OnDayControlTemplateChanged);
+                propertyChanged: OnCalendarDayTemplateChanged);
 
-        private static void OnDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnCalendarDayTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var calendar = bindable as Calendar;
             calendar.InitializeCalendarDays();
         }
 
-        public ControlTemplate DayControlTemplate
+        public ControlTemplate CalendarDayTemplate
         {
-            get => (ControlTemplate) GetValue(DayControlTemplateProperty);
-            set => SetValue(DayControlTemplateProperty, value);
+            get => (ControlTemplate) GetValue(CalendarDayTemplateProperty);
+            set => SetValue(CalendarDayTemplateProperty, value);
         }
 
         #endregion
@@ -171,7 +171,7 @@ namespace XamarinForms.CalendarComponent.Components
                 }
             }
 
-            calendar.SelectDayControls(daysToSelect);
+            calendar.SelectDays(daysToSelect);
         }
 
         public IReadOnlyCollection<DateTime> SelectedDays
@@ -238,19 +238,19 @@ namespace XamarinForms.CalendarComponent.Components
             InitializeGridForCalendarDays();
             AddCalendarDays();
 
-            SelectDayControls(SelectedDays);
+            SelectDays(SelectedDays);
         }
 
-        private void SelectDayControls(IEnumerable<DateTime> daysToSelect)
+        private void SelectDays(IEnumerable<DateTime> daysToSelect)
         {
-            _days.ForEach(dayControl => dayControl.IsSelected = false);
+            _days.ForEach(calendarDay => calendarDay.IsSelected = false);
 
             foreach (var dayToSelect in daysToSelect)
             {
-                var dayControl = _days.FirstOrDefault(x => x.Date == dayToSelect.Date);
-                if (dayControl != null)
+                var calendarDay = _days.FirstOrDefault(x => x.Date == dayToSelect.Date);
+                if (calendarDay != null)
                 {
-                    dayControl.IsSelected = true;
+                    calendarDay.IsSelected = true;
                 }
             }
         }
@@ -287,16 +287,16 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void AddCalendarDays()
         {
-            if (DayControlTemplate == null)
+            if (CalendarDayTemplate == null)
             {
                 return;
             }
 
             if (_days.Count > 0)
             {
-                foreach (var dayControl in _days)
+                foreach (var calendarDay in _days)
                 {
-                    dayControl.GestureRecognizers.Clear();
+                    calendarDay.GestureRecognizers.Clear();
                 }
 
                 _days.Clear();
@@ -336,13 +336,13 @@ namespace XamarinForms.CalendarComponent.Components
                         continue;
                     }
 
-                    AddDayControl(date, week);
+                    AddDay(date, week);
                 }
             }
 
             if (SelectedDays?.Count > 0)
             {
-                SelectDayControls(SelectedDays);
+                SelectDays(SelectedDays);
             }
         }
 
@@ -365,7 +365,7 @@ namespace XamarinForms.CalendarComponent.Components
                         continue;
                     }
 
-                    AddDayControl(newDate, week);
+                    AddDay(newDate, week);
                 } while (newDate.DayOfWeek != FirstDayOfWeek);
             }
             else if (week == weeksInMonth &&
@@ -385,65 +385,65 @@ namespace XamarinForms.CalendarComponent.Components
                         continue;
                     }
 
-                    AddDayControl(newDate, week);
+                    AddDay(newDate, week);
                 } while (newDate.DayOfWeek != lastDayOfWeek);
             }
         }
 
-        private void AddDayControl(DateTime date, int week)
+        private void AddDay(DateTime date, int week)
         {
-            var dayControl = new CalendarDay(date)
+            var calendarDay = new CalendarDay(date)
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
             };
 
-            dayControl.ControlTemplate = DayControlTemplate;
+            calendarDay.ControlTemplate = CalendarDayTemplate;
 
             var column = date.DayOfWeek(FirstDayOfWeek, includeWeekends: ShowWeekends) - 1;
-            Grid.SetColumn(dayControl, column);
+            Grid.SetColumn(calendarDay, column);
 
             var row = week - 1;
-            Grid.SetRow(dayControl, row);
+            Grid.SetRow(calendarDay, row);
 
             var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += DayControl_OnTapped;
-            dayControl.GestureRecognizers.Add(tapGestureRecognizer);
+            tapGestureRecognizer.Tapped += CalendarDay_OnTapped;
+            calendarDay.GestureRecognizers.Add(tapGestureRecognizer);
 
-            _days.Add(dayControl);
-            GridDays.Children.Add(dayControl);
+            _days.Add(calendarDay);
+            GridDays.Children.Add(calendarDay);
 
-            DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
+            DayAdded?.Invoke(this, new CalendarDayAddedEventArgs(calendarDay));
         }
 
-        private void DayControl_OnTapped(object sender, EventArgs e)
+        private void CalendarDay_OnTapped(object sender, EventArgs e)
         {
-            var dayControl = sender as DayControl;
+            var calendarDay = sender as CalendarDay;
 
-            if (dayControl.IsSelectable)
+            if (calendarDay.IsSelectable)
             {
                 if (SelectionMode == CalendarSelectionMode.SingleSelect)
                 {
-                    SelectedDays = new[] {dayControl.Date};
+                    SelectedDays = new[] {calendarDay.Date};
                 }
                 else if (SelectionMode == CalendarSelectionMode.MultiSelect)
                 {
                     var newSelectedDays = SelectedDays.ToList();
 
-                    if (dayControl.IsSelected)
+                    if (calendarDay.IsSelected)
                     {
-                        newSelectedDays.Remove(dayControl.Date);
+                        newSelectedDays.Remove(calendarDay.Date);
                     }
                     else
                     {
-                        newSelectedDays.Add(dayControl.Date);
+                        newSelectedDays.Add(calendarDay.Date);
                     }
 
                     SelectedDays = new ReadOnlyCollection<DateTime>(newSelectedDays);
                 }
             }
 
-            DayTapped?.Invoke(this, new DayControlTappedEventArgs(dayControl));
+            DayTapped?.Invoke(this, new CalendarDayTappedEventArgs(calendarDay));
         }
 
         private void InitializeWeekDayHeaders()
@@ -503,23 +503,23 @@ namespace XamarinForms.CalendarComponent.Components
         }
     }
 
-    public class DayControlAddedEventArgs : EventArgs
+    public class CalendarDayAddedEventArgs : EventArgs
     {
-        public DayControl DayControl { get; }
+        public CalendarDay CalendarDay { get; }
 
-        public DayControlAddedEventArgs(DayControl dayControl)
+        public CalendarDayAddedEventArgs(CalendarDay calendarDay)
         {
-            DayControl = dayControl;
+            CalendarDay = calendarDay;
         }
     }
 
-    public class DayControlTappedEventArgs : EventArgs
+    public class CalendarDayTappedEventArgs : EventArgs
     {
-        public DayControl DayControl { get; }
+        public CalendarDay CalendarDay { get; }
 
-        public DayControlTappedEventArgs(DayControl dayControl)
+        public CalendarDayTappedEventArgs(CalendarDay calendarDay)
         {
-            DayControl = dayControl;
+            CalendarDay = calendarDay;
         }
     }
 

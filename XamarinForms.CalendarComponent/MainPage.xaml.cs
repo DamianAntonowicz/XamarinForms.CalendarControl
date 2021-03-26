@@ -20,28 +20,28 @@ namespace XamarinForms.CalendarComponent
 
         private void Calendar_OnDayAdded(object sender, CalendarDayAddedEventArgs e)
         {
-            if (e.DayControl.Date.DayOfWeek == DayOfWeek.Saturday ||
-                e.DayControl.Date.DayOfWeek == DayOfWeek.Sunday)
+            if (e.CalendarDay.Date.DayOfWeek == DayOfWeek.Saturday ||
+                e.CalendarDay.Date.DayOfWeek == DayOfWeek.Sunday)
             {
-                e.DayControl.ControlTemplate = Resources["DayControlTemplateWeekend"] as ControlTemplate;
+                e.CalendarDay.ControlTemplate = Resources["CalendarDayTemplateWeekend"] as ControlTemplate;
             }
 
-            if (e.DayControl.Date.Day == 3 ||
-                e.DayControl.Date.Day == 10)
+            if (e.CalendarDay.Date.Day == 3 ||
+                e.CalendarDay.Date.Day == 10)
             {
-                e.DayControl.IsSelectable = false;
+                e.CalendarDay.IsSelectable = false;
             }
             
-            if (e.DayControl.Date.Day == 5 ||
-                e.DayControl.Date.Day == 16)
+            if (e.CalendarDay.Date.Day == 5 ||
+                e.CalendarDay.Date.Day == 16)
             {
-                e.DayControl.BindingContext = new Day {HasAppointments = true};
+                e.CalendarDay.BindingContext = new Day {HasAppointments = true};
             }
 
-            if (e.DayControl.Date.Month != CalendarControl.Date.Month)
+            if (e.CalendarDay.Date.Month != Calendar.Date.Month)
             {
-                e.DayControl.IsSelectable = false;
-                e.DayControl.ControlTemplate = Resources["DayControlFromOtherMonthTemplate"] as ControlTemplate;
+                e.CalendarDay.IsSelectable = false;
+                e.CalendarDay.ControlTemplate = Resources["CalendarDayFromOtherMonthTemplate"] as ControlTemplate;
             }
         }
 
@@ -57,7 +57,7 @@ namespace XamarinForms.CalendarComponent
 
         private async void Calendar_OnDayTapped(object sender, CalendarDayTappedEventArgs e)
         {
-            //await DisplayAlert(title: "", message: "You clicked on: " + e.DayControl.Date, cancel: "ok");
+            // await DisplayAlert(title: "", message: "You clicked on: " + e.CalendarDay.Date, cancel: "ok");
         }
 
         private void CheckBoxShowWeekends_OnCheckedChanged(object sender, CheckedChangedEventArgs e)
