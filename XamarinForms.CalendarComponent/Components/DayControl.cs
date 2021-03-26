@@ -3,10 +3,8 @@ using Xamarin.Forms;
 
 namespace XamarinForms.CalendarComponent.Components
 {
-    public partial class DayControl : ContentView
+    public class DayControl : TemplatedView
     {
-        public event EventHandler Tapped;
-
         #region IsSelectableProperty
 
         public static readonly BindableProperty IsSelectableProperty =
@@ -39,31 +37,15 @@ namespace XamarinForms.CalendarComponent.Components
         }
 
         #endregion
-
-        #region DateProperty
-
-        public static readonly BindableProperty DateProperty =
-            BindableProperty.Create(
-                propertyName: nameof(Date),
-                returnType: typeof(DateTime),
-                declaringType: typeof(DayControl));
-
+        
         public DateTime Date
         {
-            get => (DateTime) GetValue(DateProperty);
-            set => SetValue(DateProperty, value);
+            get;
         }
 
-        #endregion
-
-        public DayControl()
+        public DayControl(DateTime date)
         {
-            InitializeComponent();
-        }
-
-        private void DayControl_OnTapped(object sender, EventArgs e)
-        {
-            Tapped?.Invoke(this, null);
+            Date = date;
         }
     }
 }

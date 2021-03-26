@@ -294,7 +294,7 @@ namespace XamarinForms.CalendarComponent.Components
             {
                 foreach (var dayControl in Days)
                 {
-                    dayControl.Tapped -= DayComponent_OnTapped;
+                    dayControl.GestureRecognizers.Clear();
                 }
 
                 Days.Clear();
@@ -390,9 +390,8 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void AddDayControl(DateTime date, int week)
         {
-            var dayControl = new DayControl
+            var dayControl = new DayControl(date)
             {
-                Date = date,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
             };
@@ -405,7 +404,9 @@ namespace XamarinForms.CalendarComponent.Components
             var row = week - 1;
             Grid.SetRow(dayControl, row);
 
-            dayControl.Tapped += DayComponent_OnTapped;
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += DayControl_OnTapped;
+            dayControl.GestureRecognizers.Add(tapGestureRecognizer);
 
             Days.Add(dayControl);
             GridDays.Children.Add(dayControl);
@@ -413,7 +414,7 @@ namespace XamarinForms.CalendarComponent.Components
             DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
         }
 
-        private void DayComponent_OnTapped(object sender, EventArgs e)
+        private void DayControl_OnTapped(object sender, EventArgs e)
         {
             var dayControl = sender as DayControl;
 
