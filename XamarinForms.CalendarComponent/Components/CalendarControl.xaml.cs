@@ -468,9 +468,10 @@ namespace XamarinForms.CalendarComponent.Components
 
             void AddWeekDayHeaderControl(DayOfWeek dayOfWeek, int weekDayNumber)
             {
-                var weekDayControl = new WeekDayHeaderControl();
-                weekDayControl.ControlTemplate = WeekDayHeaderControlTemplate;
-                weekDayControl.DayOfWeek = dayOfWeek;
+                var weekDayControl = new WeekDayHeaderControl(dayOfWeek)
+                {
+                    ControlTemplate = WeekDayHeaderControlTemplate
+                };
 
                 Grid.SetColumn(weekDayControl, weekDayNumber - 1);
 
