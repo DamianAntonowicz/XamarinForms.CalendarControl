@@ -8,7 +8,9 @@ namespace XamarinForms.CalendarComponent.Components
 {
     public partial class CalendarControl : ContentView
     {
-        public List<DayControl> Days { get; } = new List<DayControl>();
+        private readonly List<DayControl> _days = new List<DayControl>();
+    
+        public IReadOnlyCollection<DayControl> Days => new ReadOnlyCollection<DayControl>(_days);
 
         public event EventHandler<DayControlTappedEventArgs> DayTapped;
         public event EventHandler<DayControlAddedEventArgs> DayAdded;
@@ -241,11 +243,11 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void SelectDayControls(IEnumerable<DateTime> daysToSelect)
         {
-            Days.ForEach(dayControl => dayControl.IsSelected = false);
+            _days.ForEach(dayControl => dayControl.IsSelected = false);
 
             foreach (var dayToSelect in daysToSelect)
             {
-                var dayControl = Days.FirstOrDefault(x => x.Date == dayToSelect.Date);
+                var dayControl = _days.FirstOrDefault(x => x.Date == dayToSelect.Date);
                 if (dayControl != null)
                 {
                     dayControl.IsSelected = true;
@@ -290,14 +292,14 @@ namespace XamarinForms.CalendarComponent.Components
                 return;
             }
 
-            if (Days.Count > 0)
+            if (_days.Count > 0)
             {
-                foreach (var dayControl in Days)
+                foreach (var dayControl in _days)
                 {
                     dayControl.GestureRecognizers.Clear();
                 }
 
-                Days.Clear();
+                _days.Clear();
             }
 
             var daysInWeek = 7;
@@ -408,7 +410,7 @@ namespace XamarinForms.CalendarComponent.Components
             tapGestureRecognizer.Tapped += DayControl_OnTapped;
             dayControl.GestureRecognizers.Add(tapGestureRecognizer);
 
-            Days.Add(dayControl);
+            _days.Add(dayControl);
             GridDays.Children.Add(dayControl);
 
             DayAdded?.Invoke(this, new DayControlAddedEventArgs(dayControl));
