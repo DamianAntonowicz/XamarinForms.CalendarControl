@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinForms.CalendarComponent.Components
 {
-    public partial class CalendarControl : ContentView
+    public partial class Calendar : ContentView
     {
         private readonly List<DayControl> _days = new List<DayControl>();
     
@@ -21,15 +21,15 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(ShowDaysFromOtherMonths),
                 returnType: typeof(bool),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 defaultValue: true,
                 propertyChanged: OnShowDaysFromOtherMonthsPropertyChanged);
 
         private static void OnShowDaysFromOtherMonthsPropertyChanged(BindableObject bindable, object oldValue,
             object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeCalendarDays();
+            var calendar = bindable as Calendar;
+            calendar.InitializeCalendarDays();
         }
 
         public bool ShowDaysFromOtherMonths
@@ -46,24 +46,24 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(ShowWeekends),
                 returnType: typeof(bool),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 defaultValue: true,
                 propertyChanged: OnShowWeekendsChanged);
 
         private static void OnShowWeekendsChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
+            var calendar = bindable as Calendar;
 
-            if (!calendarControl.ShowWeekends &&
-                (calendarControl.FirstDayOfWeek == DayOfWeek.Saturday ||
-                 calendarControl.FirstDayOfWeek == DayOfWeek.Sunday))
+            if (!calendar.ShowWeekends &&
+                (calendar.FirstDayOfWeek == DayOfWeek.Saturday ||
+                 calendar.FirstDayOfWeek == DayOfWeek.Sunday))
             {
-                calendarControl.FirstDayOfWeek = DayOfWeek.Monday;
+                calendar.FirstDayOfWeek = DayOfWeek.Monday;
             }
             else
             {
-                calendarControl.InitializeWeekDayHeaders();
-                calendarControl.InitializeCalendarDays();
+                calendar.InitializeWeekDayHeaders();
+                calendar.InitializeCalendarDays();
             }
         }
 
@@ -81,15 +81,15 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(WeekDayControlTemplateProperty),
                 returnType: typeof(DayOfWeek),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 defaultValue: DayOfWeek.Monday,
                 propertyChanged: OnFirstDayOfWeekChanged);
 
         private static void OnFirstDayOfWeekChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeWeekDayHeaders();
-            calendarControl.InitializeCalendarDays();
+            var calendar = bindable as Calendar;
+            calendar.InitializeWeekDayHeaders();
+            calendar.InitializeCalendarDays();
         }
 
         public DayOfWeek FirstDayOfWeek
@@ -106,13 +106,13 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(WeekDayControlTemplateProperty),
                 returnType: typeof(ControlTemplate),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 propertyChanged: OnWeekDayControlTemplateChanged);
 
         private static void OnWeekDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeWeekDayHeaders();
+            var calendar = bindable as Calendar;
+            calendar.InitializeWeekDayHeaders();
         }
 
         public ControlTemplate WeekDayHeaderControlTemplate
@@ -129,13 +129,13 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(DayControlTemplate),
                 returnType: typeof(ControlTemplate),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 propertyChanged: OnDayControlTemplateChanged);
 
         private static void OnDayControlTemplateChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeCalendarDays();
+            var calendar = bindable as Calendar;
+            calendar.InitializeCalendarDays();
         }
 
         public ControlTemplate DayControlTemplate
@@ -152,16 +152,16 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(SelectedDays),
                 returnType: typeof(IReadOnlyCollection<DateTime>),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 defaultValue: new List<DateTime>().AsReadOnly(),
                 propertyChanged: OnSelectedDaysChanged);
 
         private static void OnSelectedDaysChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var daysToSelect = newValue as IList<DateTime>;
-            var calendarControl = bindable as CalendarControl;
+            var calendar = bindable as Calendar;
 
-            if (calendarControl.SelectionMode == CalendarSelectionMode.SingleSelect)
+            if (calendar.SelectionMode == CalendarSelectionMode.SingleSelect)
             {
                 if (daysToSelect != null &&
                     daysToSelect.Count > 1)
@@ -171,7 +171,7 @@ namespace XamarinForms.CalendarComponent.Components
                 }
             }
 
-            calendarControl.SelectDayControls(daysToSelect);
+            calendar.SelectDayControls(daysToSelect);
         }
 
         public IReadOnlyCollection<DateTime> SelectedDays
@@ -188,13 +188,13 @@ namespace XamarinForms.CalendarComponent.Components
             BindableProperty.Create(
                 propertyName: nameof(Date),
                 returnType: typeof(DateTime),
-                declaringType: typeof(CalendarControl),
+                declaringType: typeof(Calendar),
                 propertyChanged: OnDateChanged);
 
         private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.InitializeCalendarDays();
+            var calendar = bindable as Calendar;
+            calendar.InitializeCalendarDays();
         }
 
         public DateTime Date
@@ -212,12 +212,12 @@ namespace XamarinForms.CalendarComponent.Components
                 propertyName: nameof(SelectionMode),
                 returnType: typeof(CalendarSelectionMode),
                 propertyChanged: OnModeChanged,
-                declaringType: typeof(CalendarControl));
+                declaringType: typeof(Calendar));
 
         private static void OnModeChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var calendarControl = bindable as CalendarControl;
-            calendarControl.SelectedDays = new List<DateTime>().AsReadOnly();
+            var calendar = bindable as Calendar;
+            calendar.SelectedDays = new List<DateTime>().AsReadOnly();
         }
 
         public CalendarSelectionMode SelectionMode
@@ -228,7 +228,7 @@ namespace XamarinForms.CalendarComponent.Components
 
         #endregion
 
-        public CalendarControl()
+        public Calendar()
         {
             InitializeComponent();
         }
@@ -392,7 +392,7 @@ namespace XamarinForms.CalendarComponent.Components
 
         private void AddDayControl(DateTime date, int week)
         {
-            var dayControl = new DayControl(date)
+            var dayControl = new CalendarDay(date)
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,

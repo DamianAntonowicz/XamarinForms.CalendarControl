@@ -207,23 +207,23 @@
 
         <StackLayout Spacing="0">
 
-            <components:CalendarControl x:Name="CalendarControl"
-                                        DayAdded="CalendarControl_OnDayAdded"
-                                        DayTapped="CalendarControl_OnDayTapped"
-                                        ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
-                                        ShowDaysFromOtherMonths="{Binding IsChecked, Source={x:Reference CheckBoxShowDaysFromOtherMonths}}"
-                                        FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
-                                        Date="01/01/21"
-                                        SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
-                                        DayControlTemplate="{StaticResource DayControlTemplate}"
-                                        WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}" />
+            <components:Calendar x:Name="Calendar"
+                                 DayAdded="Calendar_OnDayAdded"
+                                 DayTapped="Calendar_OnDayTapped"
+                                 ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
+                                 ShowDaysFromOtherMonths="{Binding IsChecked, Source={x:Reference CheckBoxShowDaysFromOtherMonths}}"
+                                 FirstDayOfWeek="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerFirstDayOfWeek}}"
+                                 Date="01/01/21"
+                                 SelectionMode="{Binding SelectedItem, Mode=TwoWay, Source={x:Reference PickerSelectionMode}}"
+                                 DayControlTemplate="{StaticResource DayControlTemplate}"
+                                 WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}"/>
 
             <StackLayout Padding="10"
                          Margin="0,20,0,0">
 
                 <Label Text="Selected days:"
                        TextColor="Black" />
-                <StackLayout BindableLayout.ItemsSource="{Binding SelectedDays, Source={x:Reference CalendarControl}}"
+                <StackLayout BindableLayout.ItemsSource="{Binding SelectedDays, Source={x:Reference Calendar}}"
                              Orientation="Horizontal"
                              HorizontalOptions="Start">
                     <BindableLayout.ItemTemplate>
@@ -238,7 +238,7 @@
                 <StackLayout VerticalOptions="EndAndExpand">
 
                     <Label
-                        Text="{Binding Date, Source={x:Reference CalendarControl}, StringFormat='Current month: {0:M/yyy}'}"
+                        Text="{Binding Date, Source={x:Reference Calendar}, StringFormat='Current month: {0:M/yyy}'}"
                         TextColor="Black"
                         Margin="0,10,0,0" />
 

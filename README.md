@@ -1,6 +1,6 @@
 # Calendar control for Xamarin.Forms
 
-This repository contains CalendarControl with following features:
+This repository contains Calendar control with following features:
 - customizing specific day with ControlTemplate
 - customizing week day header with ControlTemplate
 - single or multi select of days
@@ -11,16 +11,16 @@ This repository contains CalendarControl with following features:
 ## Code
 
 ```xml
-<components:CalendarControl x:Name="CalendarControl"
-                            DayAdded="CalendarControl_OnDayAdded"
-                            DayTapped="CalendarControl_OnDayTapped"
-                            Date="01/01/21"
-                            ShowWeekends="True"
-                            ShowDaysFromOtherMonths="True"
-                            FirstDayOfWeek="Sunday"
-                            SelectionMode="SingleSelect"
-                            DayControlTemplate="{StaticResource DayControlTemplate}"
-                            WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}" />
+<components:Calendar x:Name="Calendar"
+                     DayAdded="Calendar_OnDayAdded"
+                     DayTapped="Calendar_OnDayTapped"
+                     Date="01/01/21"
+                     ShowWeekends="True"
+                     ShowDaysFromOtherMonths="True"
+                     FirstDayOfWeek="Sunday"
+                     SelectionMode="SingleSelect"
+                     DayControlTemplate="{StaticResource DayControlTemplate}"
+                     WeekDayHeaderControlTemplate="{StaticResource WeekDayControlTemplate}" />
 ```
 
 ## Screenshots

@@ -12,13 +12,13 @@ namespace XamarinForms.CalendarComponent
             InitializeComponent();
 
             PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
-            PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
+            PickerFirstDayOfWeek.SelectedItem = Calendar.FirstDayOfWeek;
             
             PickerSelectionMode.ItemsSource = Enum.GetValues(typeof(CalendarSelectionMode));
-            PickerSelectionMode.SelectedItem = CalendarControl.SelectionMode;
+            PickerSelectionMode.SelectedItem = Calendar.SelectionMode;
         }
 
-        private void CalendarControl_OnDayAdded(object sender, DayControlAddedEventArgs e)
+        private void Calendar_OnDayAdded(object sender, CalendarDayAddedEventArgs e)
         {
             if (e.DayControl.Date.DayOfWeek == DayOfWeek.Saturday ||
                 e.DayControl.Date.DayOfWeek == DayOfWeek.Sunday)
@@ -47,15 +47,15 @@ namespace XamarinForms.CalendarComponent
 
         private void ButtonPreviousMonth_OnClicked(object sender, EventArgs e)
         {
-            CalendarControl.Date = CalendarControl.Date.AddMonths(-1);
+            Calendar.Date = Calendar.Date.AddMonths(-1);
         }
         
         private void ButtonNextMonth_OnClicked(object sender, EventArgs e)
         {
-            CalendarControl.Date = CalendarControl.Date.AddMonths(1);
+            Calendar.Date = Calendar.Date.AddMonths(1);
         }
 
-        private async void CalendarControl_OnDayTapped(object sender, DayControlTappedEventArgs e)
+        private async void Calendar_OnDayTapped(object sender, CalendarDayTappedEventArgs e)
         {
             //await DisplayAlert(title: "", message: "You clicked on: " + e.DayControl.Date, cancel: "ok");
         }
@@ -75,7 +75,7 @@ namespace XamarinForms.CalendarComponent
                 PickerFirstDayOfWeek.ItemsSource = values;
             }
 
-            PickerFirstDayOfWeek.SelectedItem = CalendarControl.FirstDayOfWeek;
+            PickerFirstDayOfWeek.SelectedItem = Calendar.FirstDayOfWeek;
         }
     }
 
