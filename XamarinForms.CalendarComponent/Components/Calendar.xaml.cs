@@ -270,29 +270,33 @@ namespace XamarinForms.CalendarComponent.Components
 
             var weeksInMonth = Date.WeeksInMonth(FirstDayOfWeek);
 
-            for (var week = 1; week <= weeksInMonth; week++)
+            if (GridDays.RowDefinitions.Count < weeksInMonth)
             {
-                RowDefinition rowDefinition = null;
+                for (var row = GridDays.RowDefinitions.Count; row < weeksInMonth; row++)
+                {
+                    GridDays.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
 
-                if (week <= GridDays.RowDefinitions.Count)
-                {
-                    rowDefinition = GridDays.RowDefinitions.ElementAt(week - 1);
-                }
+                    var daysToAdd = _days.Where(x => Grid.GetRow(x) == row).ToList();
 
-                if (rowDefinition == null)
-                {
-                    GridDays.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});    
-                }
-                else
-                {
-                    rowDefinition.Height = GridLength.Auto;
+                    foreach (var calendarDay in daysToAdd)
+                    {
+                        GridDays.Children.Add(calendarDay);
+                    }
                 }
             }
-
-            for (var week = weeksInMonth + 1; week <= GridDays.RowDefinitions.Count; week++)
+            else if (GridDays.RowDefinitions.Count > weeksInMonth)
             {
-                var rowDefinition = GridDays.RowDefinitions.ElementAt(week - 1);
-                rowDefinition.Height = new GridLength(0);
+                for (var row = GridDays.RowDefinitions.Count; row > weeksInMonth; row--)
+                {
+                    GridDays.RowDefinitions.RemoveAt(GridDays.RowDefinitions.Count - 1);
+
+                    var daysToRemove = _days.Where(x => Grid.GetRow(x) == row - 1).ToList();
+
+                    foreach (var calendarDay in daysToRemove)
+                    {
+                        GridDays.Children.Remove(calendarDay);
+                    }
+                }
             }
         }
 
