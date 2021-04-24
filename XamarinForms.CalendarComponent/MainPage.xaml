@@ -205,10 +205,10 @@
 
     <ScrollView>
 
-        <StackLayout Spacing="0">
-
+        <Grid RowDefinitions="Auto,*">
+            
             <components:Calendar x:Name="Calendar"
-                                 DayAdded="Calendar_OnDayAdded"
+                                 DayUpdated="Calendar_OnDayUpdated"
                                  DayTapped="Calendar_OnDayTapped"
                                  ShowWeekends="{Binding IsChecked, Source={x:Reference CheckBoxShowWeekends}}"
                                  ShowDaysFromOtherMonths="{Binding IsChecked, Source={x:Reference CheckBoxShowDaysFromOtherMonths}}"
@@ -218,7 +218,9 @@
                                  DayControlTemplate="{StaticResource CalendarDayControlTemplate}"
                                  WeekDayHeaderControlTemplate="{StaticResource CalendarWeekDayHeaderControlTemplate}"/>
 
-            <StackLayout Padding="10"
+            <StackLayout Grid.Row="1" 
+                         Padding="10"
+                         VerticalOptions="End"
                          Margin="0,20,0,0">
 
                 <Label Text="Selected days:"
@@ -290,7 +292,7 @@
                 </StackLayout>
 
             </StackLayout>
-        </StackLayout>
+        </Grid>
 
     </ScrollView>
 

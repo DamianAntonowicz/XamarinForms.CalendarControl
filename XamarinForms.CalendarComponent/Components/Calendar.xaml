@@ -29,6 +29,7 @@
         </Grid>
 
         <Grid x:Name="GridDays"
+              ColumnSpacing="0"
               Grid.Row="1">
 
             <Grid.ColumnDefinitions>

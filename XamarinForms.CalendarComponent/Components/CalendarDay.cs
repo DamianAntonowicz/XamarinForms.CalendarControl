@@ -37,15 +37,21 @@ namespace XamarinForms.CalendarComponent.Components
         }
 
         #endregion
-        
+
+        #region DateProperty
+
+        public static readonly BindableProperty DateProperty =
+            BindableProperty.Create(
+                propertyName: nameof(Date),
+                returnType: typeof(DateTime),
+                declaringType: typeof(CalendarDay));
+
         public DateTime Date
         {
-            get;
+            get => (DateTime) GetValue(DateProperty);
+            set => SetValue(DateProperty, value);
         }
 
-        public CalendarDay(DateTime date)
-        {
-            Date = date;
-        }
+        #endregion
     }
 }

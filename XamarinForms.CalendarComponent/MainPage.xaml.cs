@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using XamarinForms.CalendarComponent.Components;
 
@@ -13,13 +15,15 @@ namespace XamarinForms.CalendarComponent
 
             PickerFirstDayOfWeek.ItemsSource = Enum.GetValues(typeof(DayOfWeek));
             PickerFirstDayOfWeek.SelectedItem = Calendar.FirstDayOfWeek;
-            
+
             PickerSelectionMode.ItemsSource = Enum.GetValues(typeof(CalendarSelectionMode));
             PickerSelectionMode.SelectedItem = Calendar.SelectionMode;
         }
 
-        private void Calendar_OnDayAdded(object sender, CalendarDayAddedEventArgs e)
+        private void Calendar_OnDayUpdated(object sender, CalendarDayAddedEventArgs e)
         {
+            e.CalendarDay.ControlTemplate = Resources["CalendarDayControlTemplate"] as ControlTemplate;
+
             if (e.CalendarDay.Date.DayOfWeek == DayOfWeek.Saturday ||
                 e.CalendarDay.Date.DayOfWeek == DayOfWeek.Sunday)
             {
@@ -31,17 +35,43 @@ namespace XamarinForms.CalendarComponent
             {
                 e.CalendarDay.IsSelectable = false;
             }
-            
+            else
+            {
+                e.CalendarDay.IsSelectable = true;
+            }
+
             if (e.CalendarDay.Date.Day == 5 ||
                 e.CalendarDay.Date.Day == 16)
             {
-                e.CalendarDay.BindingContext = new Day {HasAppointments = true};
+                var day = e.CalendarDay.BindingContext as Day;
+
+                if (day == null)
+                {
+                    day = new Day
+                    {
+                        HasAppointments = true
+                    };
+
+                    e.CalendarDay.BindingContext = day;
+                }
+
+                day.HasAppointments = true;
+            }
+            else
+            {
+                var day = e.CalendarDay.BindingContext as Day;
+
+                if (day != null)
+                {
+                    day.HasAppointments = false;
+                }
             }
 
             if (e.CalendarDay.Date.Month != Calendar.Date.Month)
             {
                 e.CalendarDay.IsSelectable = false;
-                e.CalendarDay.ControlTemplate = Resources["CalendarDayFromOtherMonthControlTemplate"] as ControlTemplate;
+                e.CalendarDay.ControlTemplate =
+                    Resources["CalendarDayFromOtherMonthControlTemplate"] as ControlTemplate;
             }
         }
 
@@ -49,7 +79,7 @@ namespace XamarinForms.CalendarComponent
         {
             Calendar.Date = Calendar.Date.AddMonths(-1);
         }
-        
+
         private void ButtonNextMonth_OnClicked(object sender, EventArgs e)
         {
             Calendar.Date = Calendar.Date.AddMonths(1);
@@ -79,8 +109,25 @@ namespace XamarinForms.CalendarComponent
         }
     }
 
-    public class Day
+    public class Day : INotifyPropertyChanged
     {
-        public bool HasAppointments { get; set; }
+        private bool _hasAppointments;
+
+        public bool HasAppointments
+        {
+            get => _hasAppointments;
+            set
+            {
+                _hasAppointments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
